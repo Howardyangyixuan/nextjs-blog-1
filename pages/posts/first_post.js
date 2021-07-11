@@ -2,6 +2,9 @@ import React from "react"
 import Link from "next/link"
 import Head from "next/head"
 import styles from "styles/FirstPost.module.css"
+import png from "assets/images/3.png"
+import freestyle from "public/freestyle.png"
+import Image from "next/image"
 
 export default function FirstPost() {
   return (
@@ -10,7 +13,8 @@ export default function FirstPost() {
         <div className={styles.wrapper}>
           <div className={styles.content}>hi</div>
         </div>
-        <img src="/3.png" alt=""/>
+        <Image src={png}/>
+        <Image src={freestyle}/>
         <hr/>
         <Link href="/"><a>回到首页</a></Link>
       </div>
