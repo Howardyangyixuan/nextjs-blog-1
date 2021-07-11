@@ -13,7 +13,7 @@ export default function FirstPost() {
         <div className={styles.wrapper}>
           <div className={styles.content}>hi</div>
         </div>
-        <Image src={png}/>
+        <img src={png.src} alt=""/>
         <Image src={freestyle}/>
         <hr/>
         <Link href="/"><a>回到首页</a></Link>
