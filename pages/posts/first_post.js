@@ -10,6 +10,7 @@ export default function FirstPost() {
         <div className={styles.wrapper}>
           <div className={styles.content}>hi</div>
         </div>
+        <img src="/3.png" alt=""/>
         <hr/>
         <Link href="/"><a>回到首页</a></Link>
       </div>
