@@ -4,7 +4,7 @@ import {promises as fsPromise} from 'fs';
 import * as fs from 'fs';
 import matter from 'gray-matter';
 
-export const getPosts: (req: NextApiRequest, res: NextApiResponse) => Promise<{ date: string; id: string; title: string }[]> = async (req, res) => {
+export const getPosts: () => Promise<{ date: string; id: string; title: string }[]> = async () => {
   const blogDir = path.join(process.cwd(), 'markdown');
   let blogList = await fsPromise.readdir(blogDir);
   console.log(blogList);
@@ -14,6 +14,6 @@ export const getPosts: (req: NextApiRequest, res: NextApiResponse) => Promise<{ 
     console.log(filePath);
     let contentString = fs.readFileSync(filePath, 'utf-8');
     let {data: {title, date}, content} = matter(contentString);
-    return {id, title, date};
+    return {id, title, date: date.toString()};
   });
 };

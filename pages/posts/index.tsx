@@ -1,23 +1,36 @@
-import {NextPage} from 'next';
+import {GetStaticProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
-import {usePosts} from 'hooks/usePosts';
+import {getPosts} from '../../lib/posts';
 
-const PostsIndex: NextPage = () => {
-  const {isLoading, isEmpty, posts} = usePosts();
+type Props = {
+  posts: Post[]
+}
+const PostsIndex: NextPage<Props> = (props) => {
+  console.log(props.posts);
+  let posts = props.posts;
   return (
     <div>
       <h1>文章列表</h1>
-      {isLoading ? <div>正在加载中</div> :
-        isEmpty ? <div>正在构思中...目前还有没有文章</div> :
-          <ul>
-            {posts.map((post) => {
-              return (
-                <li key={post.id}>{post.title}</li>
-              );
-            })}
-          </ul>
+      {posts.length == 0 ? <div>正在构思中...目前还有没有文章</div> :
+        <ul>
+          {posts.map((post) => {
+            return (
+              <li key={post.id}>{post.title}</li>
+            );
+          })}
+        </ul>
       }
     </div>
   );
 };
 export default PostsIndex;
+
+export const getStaticProps: GetStaticProps = async () => {
+  const posts = await getPosts();
+  console.log(posts);
+  return {
+    props: {
+      posts
+    }
+  };
+};
