@@ -6,3 +6,6 @@ type Post = {
   date: string;
   title: string;
 }
+type Props = {
+  posts: Post[]
+}

@@ -2,9 +2,7 @@ import {GetStaticProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
 import {getPosts} from '../../lib/posts';
 
-type Props = {
-  posts: Post[]
-}
+
 const PostsIndex: NextPage<Props> = (props) => {
   console.log(props.posts);
   let posts = props.posts;
