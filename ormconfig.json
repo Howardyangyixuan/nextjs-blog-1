@@ -4,11 +4,11 @@
    "port": 5432,
    "username": "blog",
    "password": "",
-   "database": "blog-development",
+   "database": "blog_development",
    "synchronize": true,
    "logging": false,
    "entities": [
-      "src/entity/**/*.ts"
+      "dist/entity/**/*.ts"
    ],
    "migrations": [
       "src/migration/**/*.ts"
