@@ -27,8 +27,10 @@ export class AddCreatedAtAndUpdatedAt1626275853512 implements MigrationInterface
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     for (let table of tables) {
-      await queryRunner.dropColumn(table, 'createdAt');
-      await queryRunner.dropColumn(table, 'updatedAt');
+      if (await queryRunner.manager.find(table)) {
+        await queryRunner.dropColumn(table, 'createdAt');
+        await queryRunner.dropColumn(table, 'updatedAt');
+      }
     }
   }
 

@@ -15,11 +15,11 @@ export class CreateComments1626271630028 implements MigrationInterface {
           generationStrategy: 'increment'
         },
         {
-          name: 'user_id',
+          name: 'userId',
           type: 'int',
         },
         {
-          name: 'post_id',
+          name: 'postId',
           type: 'int',
         },
         {

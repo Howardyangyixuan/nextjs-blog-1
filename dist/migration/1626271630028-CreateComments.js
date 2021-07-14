@@ -40,10 +40,10 @@ var CreateComments1626271630028 = /*#__PURE__*/function () {
                     isGenerated: true,
                     generationStrategy: 'increment'
                   }, {
-                    name: 'user_id',
+                    name: 'userId',
                     type: 'int'
                   }, {
-                    name: 'post_id',
+                    name: 'postId',
                     type: 'int'
                   }, {
                     name: 'content',

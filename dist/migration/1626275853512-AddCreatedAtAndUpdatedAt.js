@@ -117,45 +117,54 @@ var AddCreatedAtAndUpdatedAt1626275853512 = /*#__PURE__*/function () {
 
               case 3:
                 if ((_step2 = _iterator2.n()).done) {
-                  _context2.next = 11;
+                  _context2.next = 14;
                   break;
                 }
 
                 table = _step2.value;
                 _context2.next = 7;
-                return queryRunner.dropColumn(table, 'createdAt');
+                return queryRunner.manager.find(table);
 
               case 7:
-                _context2.next = 9;
+                if (!_context2.sent) {
+                  _context2.next = 12;
+                  break;
+                }
+
+                _context2.next = 10;
+                return queryRunner.dropColumn(table, 'createdAt');
+
+              case 10:
+                _context2.next = 12;
                 return queryRunner.dropColumn(table, 'updatedAt');
 
-              case 9:
+              case 12:
                 _context2.next = 3;
                 break;
 
-              case 11:
-                _context2.next = 16;
+              case 14:
+                _context2.next = 19;
                 break;
 
-              case 13:
-                _context2.prev = 13;
+              case 16:
+                _context2.prev = 16;
                 _context2.t0 = _context2["catch"](1);
 
                 _iterator2.e(_context2.t0);
 
-              case 16:
-                _context2.prev = 16;
+              case 19:
+                _context2.prev = 19;
 
                 _iterator2.f();
 
-                return _context2.finish(16);
+                return _context2.finish(19);
 
-              case 19:
+              case 22:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2, null, [[1, 13, 16, 19]]);
+        }, _callee2, null, [[1, 16, 19, 22]]);
       }));
 
       function down(_x2) {
