@@ -1,30 +1,62 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 初始代码
 
-## Getting Started
+## 启动数据库
 
-First, run the development server:
+```
+mkdir blog-data
+docker run -v "$PWD/blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
 
-```bash
-npm run dev
-# or
-yarn dev
+或者旧版 Windows Docker 客户端运行下面的代码
+
+docker run -v "blog-data":/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_USER=blog -e POSTGRES_HOST_AUTH_METHOD=trust -d postgres:12.2
+
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 清空之前的开发环境
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```
+docker ps
+docker kill 容器id
+docker rm 容器id
 
-## Learn More
+rm -rf blog-data
+或
+docker container prune 
+docker volume rm blog-data
 
-To learn more about Next.js, take a look at the following resources:
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 创建数据库
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```
+docker exec -it <id> bash
+psql -U blog
+CREATE DATABASE blog_development ENCODING 'UTF8' LC_COLLATE 'en_US.utf8' LC_CTYPE 'en_US.utf8';
+```
 
-## Deploy on Vercel
+## 数据表
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+首先修改 ormconfig.json 中的 host，然后运行
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```
+yarn m:run
+node dist/seed.js
+```
+
+## 开发
+
+```bash
+yarn dev
+# or
+npm run dev
+```
+
+## 部署
+
+```bash 
+yarn build
+yarn start
+```
+
+{"mode":"full","isActive":false}
