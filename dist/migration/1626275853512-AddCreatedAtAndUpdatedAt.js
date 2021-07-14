@@ -55,12 +55,12 @@ var AddCreatedAtAndUpdatedAt1626275853512 = /*#__PURE__*/function () {
                 _context.next = 7;
                 return queryRunner.addColumns(table, [new _typeorm.TableColumn({
                   name: 'createdAt',
-                  type: 'time',
+                  type: 'timestamp',
                   isNullable: false,
                   "default": 'now()'
                 }), new _typeorm.TableColumn({
                   name: 'updatedAt',
-                  type: 'time',
+                  type: 'timestamp',
                   isNullable: false,
                   "default": 'now()'
                 })]);
@@ -123,7 +123,7 @@ var AddCreatedAtAndUpdatedAt1626275853512 = /*#__PURE__*/function () {
 
                 table = _step2.value;
                 _context2.next = 7;
-                return queryRunner.manager.find(table);
+                return queryRunner.hasTable(table);
 
               case 7:
                 if (!_context2.sent) {

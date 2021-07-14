@@ -10,13 +10,13 @@ export class AddCreatedAtAndUpdatedAt1626275853512 implements MigrationInterface
       await queryRunner.addColumns(table, [
           new TableColumn({
             name: 'createdAt',
-            type: 'time',
+            type: 'timestamp',
             isNullable: false,
             default: 'now()'
           }),
           new TableColumn({
             name: 'updatedAt',
-            type: 'time',
+            type: 'timestamp',
             isNullable: false,
             default: 'now()'
           })
@@ -27,7 +27,7 @@ export class AddCreatedAtAndUpdatedAt1626275853512 implements MigrationInterface
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     for (let table of tables) {
-      if (await queryRunner.manager.find(table)) {
+      if (await queryRunner.hasTable(table)){
         await queryRunner.dropColumn(table, 'createdAt');
         await queryRunner.dropColumn(table, 'updatedAt');
       }
