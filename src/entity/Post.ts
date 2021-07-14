@@ -3,9 +3,14 @@ import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 @Entity('posts')
 export class Post {
   @PrimaryGeneratedColumn('increment')
-  id:number;
+  id: number;
   @Column('varchar')
-  title:string;
+  title: string;
   @Column('text')
-  content:string;
+  content: string;
+
+  constructor(title: string, content: string) {
+    this.title = title;
+    this.content = content;
+  }
 }
