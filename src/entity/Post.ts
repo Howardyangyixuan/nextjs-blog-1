@@ -15,9 +15,6 @@ export class Post {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column('int')
-  authorId: number;
-
   @Column('varchar')
   title: string;
 
@@ -32,13 +29,13 @@ export class Post {
   // @CreateDateColumn()
   updatedAt:Date;
 
-  @ManyToOne(() => User, author => author.posts)
+  @ManyToOne(() => User, user => user.posts)
   author: User;
 
   @OneToMany(() => Comment, comment=> comment.post)
   comments: Comment[];
-  constructor(authorId:number,title: string, content: string) {
-    this.authorId = authorId;
+  constructor(author:User,title: string, content: string) {
+    this.author = author;
     this.title = title;
     this.content = content;
   }

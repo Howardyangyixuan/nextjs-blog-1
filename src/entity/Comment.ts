@@ -7,12 +7,6 @@ export class Comment {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @Column('int')
-  userId: number;
-
-  @Column('int')
-  postId: number;
-
   @Column('text')
   content: string;
 
@@ -24,9 +18,14 @@ export class Comment {
     // @CreateDateColumn()
   updatedAt:Date;
 
-  @ManyToOne(() => User, user => user.comments)
-  user: User;
-
   @ManyToOne(() => Post, post => post.comments)
   post: Post;
+
+  @ManyToOne(() => User, user => user.comments)
+  user: User;
+  constructor(user:User,post:Post,content:string) {
+    this.user = user
+    this.post = post
+    this.content = content
+  }
 }

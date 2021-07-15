@@ -37,7 +37,7 @@ var User = (_dec = (0, _typeorm.Entity)('users'), _dec2 = (0, _typeorm.PrimaryGe
   return _Comment.Comment;
 }, function (comment) {
   return comment.user;
-}), _dec(_class = (_class2 = (_temp = function User() {
+}), _dec(_class = (_class2 = (_temp = function User(username, passwordDigest) {
   (0, _classCallCheck2["default"])(this, User);
   (0, _initializerDefineProperty2["default"])(this, "id", _descriptor, this);
   (0, _initializerDefineProperty2["default"])(this, "username", _descriptor2, this);
@@ -46,6 +46,8 @@ var User = (_dec = (0, _typeorm.Entity)('users'), _dec2 = (0, _typeorm.PrimaryGe
   (0, _initializerDefineProperty2["default"])(this, "updatedAt", _descriptor5, this);
   (0, _initializerDefineProperty2["default"])(this, "posts", _descriptor6, this);
   (0, _initializerDefineProperty2["default"])(this, "comments", _descriptor7, this);
+  this.username = username;
+  this.passwordDigest = passwordDigest;
 }, _temp), (_descriptor = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "id", [_dec2], {
   configurable: true,
   enumerable: true,
