@@ -1,11 +1,14 @@
 import {createConnection, getConnectionManager} from 'typeorm';
 import {returnStatement} from '@babel/types';
 
-//立即执行函数
-const promise = (async function () {
-  return createConnection();
-})();
 
 export const getDatabaseConnection = async () => {
-  return promise;
+  let manager = getConnectionManager();
+  if (manager.has('default') && manager.get('default').isConnected) {
+    console.log('复用');
+    return manager.get('default');
+  } else {
+    console.log('初始化');
+    return createConnection();
+  }
 };

@@ -6,8 +6,7 @@ import matter from 'gray-matter';
 import {getDatabaseConnection} from './getDatabaseConnection';
 
 export const getPosts: () => Promise<{ date: string; id: string; title: string }[]> = async () => {
-  const connection = await getDatabaseConnection()
-  console.log(connection);
+  const connection = await getDatabaseConnection();
   const blogDir = path.join(process.cwd(), 'markdown');
   let blogList = await fsPromise.readdir(blogDir);
   // console.log(blogList);

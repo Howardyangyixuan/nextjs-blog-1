@@ -32,7 +32,7 @@ export default PostsIndex;
 
 export const getStaticProps: GetStaticProps = async () => {
   const posts = await getPosts();
-  console.log(posts);
+  // console.log(posts);
   return {
     props: {
       posts
