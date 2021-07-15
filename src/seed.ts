@@ -8,7 +8,7 @@ createConnection().then(async connection => {
   if (posts.length === 0) {
     console.log(posts);
     for (let i = 1; i < 12; i++) {
-      const p = new Post(`Post ${i}`, `第${i}篇文章`);
+      const p = new Post(i,`Post ${i}`, `第${i}篇文章`);
       await connection.manager.save(p);
     }
 

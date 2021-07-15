@@ -39,7 +39,7 @@ var _Post = require("./entity/Post");
               break;
             }
 
-            p = new _Post.Post("Post ".concat(i), "\u7B2C".concat(i, "\u7BC7\u6587\u7AE0"));
+            p = new _Post.Post(i, "Post ".concat(i), "\u7B2C".concat(i, "\u7BC7\u6587\u7AE0"));
             _context.next = 10;
             return connection.manager.save(p);
 

@@ -5,7 +5,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Post = void 0;
+exports.Comment = void 0;
 
 var _initializerDefineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/initializerDefineProperty"));
 
@@ -21,46 +21,43 @@ var _typeorm = require("typeorm");
 
 var _User = require("./User");
 
-var _Comment = require("./Comment");
+var _Post = require("./Post");
 
 var _dec, _dec2, _dec3, _dec4, _dec5, _dec6, _dec7, _dec8, _dec9, _class, _class2, _descriptor, _descriptor2, _descriptor3, _descriptor4, _descriptor5, _descriptor6, _descriptor7, _descriptor8, _temp;
 
-var Post = (_dec = (0, _typeorm.Entity)('posts'), _dec2 = (0, _typeorm.PrimaryGeneratedColumn)('increment'), _dec3 = (0, _typeorm.Column)('int'), _dec4 = (0, _typeorm.Column)('varchar'), _dec5 = (0, _typeorm.Column)('text'), _dec6 = (0, _typeorm.CreateDateColumn)({
+var Comment = (_dec = (0, _typeorm.Entity)('comments'), _dec2 = (0, _typeorm.PrimaryGeneratedColumn)('increment'), _dec3 = (0, _typeorm.Column)('int'), _dec4 = (0, _typeorm.Column)('int'), _dec5 = (0, _typeorm.Column)('text'), _dec6 = (0, _typeorm.CreateDateColumn)({
   type: 'timestamp'
 }), _dec7 = (0, _typeorm.UpdateDateColumn)({
   type: 'timestamp'
 }), _dec8 = (0, _typeorm.ManyToOne)(function () {
   return _User.User;
-}, function (author) {
-  return author.posts;
-}), _dec9 = (0, _typeorm.OneToMany)(function () {
-  return _Comment.Comment;
-}, function (comment) {
-  return comment.post;
-}), _dec(_class = (_class2 = (_temp = function Post(authorId, title, content) {
-  (0, _classCallCheck2["default"])(this, Post);
+}, function (user) {
+  return user.comments;
+}), _dec9 = (0, _typeorm.ManyToOne)(function () {
+  return _Post.Post;
+}, function (post) {
+  return post.comments;
+}), _dec(_class = (_class2 = (_temp = function Comment() {
+  (0, _classCallCheck2["default"])(this, Comment);
   (0, _initializerDefineProperty2["default"])(this, "id", _descriptor, this);
-  (0, _initializerDefineProperty2["default"])(this, "authorId", _descriptor2, this);
-  (0, _initializerDefineProperty2["default"])(this, "title", _descriptor3, this);
+  (0, _initializerDefineProperty2["default"])(this, "userId", _descriptor2, this);
+  (0, _initializerDefineProperty2["default"])(this, "postId", _descriptor3, this);
   (0, _initializerDefineProperty2["default"])(this, "content", _descriptor4, this);
   (0, _initializerDefineProperty2["default"])(this, "createdAt", _descriptor5, this);
   (0, _initializerDefineProperty2["default"])(this, "updatedAt", _descriptor6, this);
-  (0, _initializerDefineProperty2["default"])(this, "author", _descriptor7, this);
-  (0, _initializerDefineProperty2["default"])(this, "comments", _descriptor8, this);
-  this.authorId = authorId;
-  this.title = title;
-  this.content = content;
+  (0, _initializerDefineProperty2["default"])(this, "user", _descriptor7, this);
+  (0, _initializerDefineProperty2["default"])(this, "post", _descriptor8, this);
 }, _temp), (_descriptor = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "id", [_dec2], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor2 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "authorId", [_dec3], {
+}), _descriptor2 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "userId", [_dec3], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor3 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "title", [_dec4], {
+}), _descriptor3 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "postId", [_dec4], {
   configurable: true,
   enumerable: true,
   writable: true,
@@ -80,15 +77,15 @@ var Post = (_dec = (0, _typeorm.Entity)('posts'), _dec2 = (0, _typeorm.PrimaryGe
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor7 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "author", [_dec8], {
+}), _descriptor7 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "user", [_dec8], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
-}), _descriptor8 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "comments", [_dec9], {
+}), _descriptor8 = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "post", [_dec9], {
   configurable: true,
   enumerable: true,
   writable: true,
   initializer: null
 })), _class2)) || _class);
-exports.Post = Post;
+exports.Comment = Comment;
