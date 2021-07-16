@@ -1,6 +1,7 @@
 import {GetStaticProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
 import React from 'react';
 import {getPosts} from '../../lib/posts';
+import Link from 'next/link';
 
 type Post = {
   id: string;
@@ -11,7 +12,7 @@ type Props = {
   posts: Post[]
 }
 const PostsIndex: NextPage<Props> = (props) => {
-  console.log(props.posts);
+  // console.log(props.posts);
   let posts = props.posts;
   return (
     <div>
@@ -20,7 +21,11 @@ const PostsIndex: NextPage<Props> = (props) => {
         <ul>
           {posts.map((post) => {
             return (
-              <li key={post.id}>{post.title}</li>
+              <li key={post.id}>
+                <Link href={`/posts/${post.id}`}>
+                  <a>{post.title}</a>
+                </Link>
+              </li>
             );
           })}
         </ul>

@@ -12,11 +12,11 @@ export default function FirstPost() {
       <div>First Page
         <div className={styles.wrapper}>
           <div className={styles.content}>hi</div>
-        </div>
-        <img src={png.src} alt=""/>
-        <Image src={freestyle}/>
-        <hr/>
-        <Link href="/"><a>回到首页</a></Link>
+    </div>
+  <img src={png.src} alt=""/>
+  <Image src={freestyle}/>
+  <hr/>
+  <Link href="/"><a>回到首页</a></Link>
       </div>
     </React.Fragment>
   )

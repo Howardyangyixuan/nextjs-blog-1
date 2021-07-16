@@ -4,18 +4,24 @@ import {promises as fsPromise} from 'fs';
 import * as fs from 'fs';
 import matter from 'gray-matter';
 import {getDatabaseConnection} from './getDatabaseConnection';
+import {Post} from '../src/entity/Post';
 
 export const getPosts: () => Promise<{ date: string; id: string; title: string }[]> = async () => {
   const connection = await getDatabaseConnection();
-  const blogDir = path.join(process.cwd(), 'markdown');
-  let blogList = await fsPromise.readdir(blogDir);
-  // console.log(blogList);
-  return blogList.map((fileName) => {
-    let id = fileName.replace(/\.md$/, '');
-    let filePath = path.join(blogDir, fileName);
-    // console.log(filePath);
-    let contentString = fs.readFileSync(filePath, 'utf-8');
-    let {data: {title, date}, content} = matter(contentString);
-    return {id, title, date: date.toString()};
-  });
+
+  let posts = await connection.manager.find('posts');
+  // console.log(posts);
+  return JSON.parse(JSON.stringify((posts)));
+};
+
+export const getPost: (id: number) => Promise<{ date: string; id: string; title: string }> = async (id: number) => {
+  const connection = await getDatabaseConnection();
+  // const post = connection.getRepository(Post)
+  //   .createQueryBuilder('posts')
+  //   .where('post.id = :id', {id})
+  //   .getOne();
+  // console.log(post);
+  let posts = await connection.manager.find('posts');
+  // console.log(posts);
+  return JSON.parse(JSON.stringify((posts[id - 1])));
 };
