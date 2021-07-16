@@ -30,6 +30,5 @@ export const getPostIds: () => Promise<string[]> = async () => {
   const connection = await getDatabaseConnection();
   let posts:Post[]= await connection.manager.find('posts');
   let ids = posts.map(post => post.id.toString());
-  console.log(ids);
   return ids;
 };

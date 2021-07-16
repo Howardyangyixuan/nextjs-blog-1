@@ -44,8 +44,8 @@ export const getStaticProps: GetStaticProps = async (staticContext) => {
   };
 };
 // export const getServerSideProps = async (context: NextPageContext) => {
-//   let {id} = context.query;
-//   console.log(id);
+//   // let {id} = context.query;
+//   let {id} = context.params;
 //   let post = await getPost(parseInt(id));
 //   return {
 //     props: {
