@@ -1,7 +1,9 @@
 import React from 'react';
-import {NextPage, NextPageContext} from 'next';
+import {GetStaticPaths, GetStaticProps, NextPage, NextPageContext} from 'next';
 import {getPost} from '../../lib/posts';
 import {Post} from '../../src/entity/Post';
+import exp from 'constants';
+import {assertSuper} from '@babel/types';
 
 type Props = {
   post: Post
@@ -19,8 +21,19 @@ const Page: NextPage<Props> = (props) => {
 };
 export default Page;
 
-export const getServerSideProps = async (context: NextPageContext) => {
-  let {id} = context.query;
+export const getStaticPaths:GetStaticPaths = ()=>{
+  let paths = []
+  for(let i=1;i<12;i++){
+    paths.push({params:{id:i.toString()}})
+  }
+  return {
+    paths,
+    fallback:false
+  }
+}
+
+export const getStaticProps:GetStaticProps = async(staticContext)=>{
+  const id = staticContext.params.id
   console.log(id);
   let post = await getPost(parseInt(id));
   return {
@@ -28,4 +41,14 @@ export const getServerSideProps = async (context: NextPageContext) => {
       post
     }
   };
-};
+}
+// export const getServerSideProps = async (context: NextPageContext) => {
+//   let {id} = context.query;
+//   console.log(id);
+//   let post = await getPost(parseInt(id));
+//   return {
+//     props: {
+//       post
+//     }
+//   };
+// };
