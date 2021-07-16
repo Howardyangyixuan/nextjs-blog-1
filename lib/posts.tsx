@@ -25,3 +25,11 @@ export const getPost: (id: number) => Promise<{ date: string; id: string; title:
   // console.log(posts);
   return JSON.parse(JSON.stringify((posts[id - 1])));
 };
+
+export const getPostIds: () => Promise<string[]> = async () => {
+  const connection = await getDatabaseConnection();
+  let posts:Post[]= await connection.manager.find('posts');
+  let ids = posts.map(post => post.id.toString());
+  console.log(ids);
+  return ids;
+};

@@ -1,9 +1,7 @@
 import React from 'react';
 import {GetStaticPaths, GetStaticProps, NextPage, NextPageContext} from 'next';
-import {getPost} from '../../lib/posts';
+import {getPost, getPostIds} from '../../lib/posts';
 import {Post} from '../../src/entity/Post';
-import exp from 'constants';
-import {assertSuper} from '@babel/types';
 
 type Props = {
   post: Post
@@ -21,27 +19,30 @@ const Page: NextPage<Props> = (props) => {
 };
 export default Page;
 
-export const getStaticPaths:GetStaticPaths = ()=>{
-  let paths = []
-  for(let i=1;i<12;i++){
-    paths.push({params:{id:i.toString()}})
+export const getStaticPaths: GetStaticPaths = async () => {
+  let ids = await getPostIds();
+  let paths = [];
+  for (let id of ids) {
+    paths.push({params: {id}});
   }
   return {
     paths,
-    fallback:false
-  }
-}
+    fallback: false
+  };
+};
 
-export const getStaticProps:GetStaticProps = async(staticContext)=>{
-  const id = staticContext.params.id
-  console.log(id);
-  let post = await getPost(parseInt(id));
+export const getStaticProps: GetStaticProps = async (staticContext) => {
+  const id = staticContext.params.id;
+  let post;
+  //id可能为数组，不知道为什么
+  if (typeof id === 'string') post = await getPost(parseInt(id));
+  else post = await getPost(parseInt(id[0]));
   return {
     props: {
       post
     }
   };
-}
+};
 // export const getServerSideProps = async (context: NextPageContext) => {
 //   let {id} = context.query;
 //   console.log(id);
