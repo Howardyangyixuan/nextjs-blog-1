@@ -1,28 +1,53 @@
 import {NextApiHandler, NextApiRequest, NextApiResponse} from 'next';
 import {addUser} from 'lib/users';
+import {SignUpUser, SignUpErrors} from '../../../custom';
+import md5 from 'md5';
 
-type SignUpUser = {
-  username: string
-  password: string
-  passwordConfirmation: string
-}
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
-  // console.log(req.body);
-  let signUpUser: SignUpUser = req.body;
-  //两次密码不一致
-  if (signUpUser.password !== signUpUser.passwordConfirmation) {
-    const error = {passwordConfirmation: ['两次密码不一致']};
-    //无法接受的实体
-    res.statusCode = 422;
-    res.setHeader('Content-Type', 'application/json');
-    res.write(JSON.stringify(error));
-    res.end();
-  } else {
-    let user = {username: signUpUser.username, password: signUpUser.password};
-    await addUser(user);
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify('添加成功'));
+    const signUpUser: SignUpUser = req.body;
+    const {username, password, passwordConfirmation} = signUpUser;
+    //收集错误信息
+    const errors: SignUpErrors = {
+      username: [],
+      password: [],
+      passwordConfirmation: []
+    };
+    //用户名错误
+    let cleanUsername = username.trim();
+    if (cleanUsername === '') errors.username.push('用户名不能为空');
+    if (cleanUsername.length > 10 || cleanUsername.length < 3) errors.username.push('用户名长度要求3-10个字符');
+    if (!/^\w*$/.test(username)) errors.username.push('用户名只允许出现数字、英文字母和下划线');
+    //密码错误
+    if (password == '') errors.password.push('密码不能为空');
+    //密码确认错误
+    if (password !== passwordConfirmation) errors.passwordConfirmation.push('两次密码不一致');
+    //存在错误
+    const hasError = Object.values(errors).find(error => error.length > 0);
+    if (hasError) {
+      //无法接受的实体
+      res.statusCode = 422;
+      res.setHeader('Content-Type', 'application/json');
+      res.write(JSON.stringify(errors));
+      res.end();
+    } else {
+      //TODO: 仅使用md5哈希，需要添加加密方式
+      let passwordDigest = md5(password);
+      let user = {username, passwordDigest};
+      addUser(user).then(
+        () => {
+          console.log('hi');
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.write(JSON.stringify(user));
+          res.end(JSON.stringify('添加成功'));
+        },
+        (error) => {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(error));
+        }
+      );
+    }
   }
-};
+;
 export default Users;

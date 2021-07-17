@@ -18,6 +18,7 @@
     "@types/axios": "^0.14.0",
     "axios": "^0.21.1",
     "gray-matter": "^4.0.3",
+    "md5": "^2.3.0",
     "next": "11.0.1",
     "pg": "^8.6.0",
     "react": "17.0.2",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.14.5",
+    "@types/md5": "^2.3.1",
     "@types/node": "^16.3.1",
     "@types/react": "^17.0.14",
     "@types/react-dom": "^17.0.8",
