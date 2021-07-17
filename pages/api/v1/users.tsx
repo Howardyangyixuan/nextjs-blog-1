@@ -1,46 +1,25 @@
 import {NextApiHandler, NextApiRequest, NextApiResponse} from 'next';
 import {addUser, findUser} from 'lib/users';
-import {SignUpUser, SignUpErrors, User} from '../../../custom';
+import {SignUpUser, SignUpErrors} from '../../../custom';
 import md5 from 'md5';
+import {User} from '../../../src/entity/User';
 
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
     const signUpUser: SignUpUser = req.body;
     const {username, password, passwordConfirmation} = signUpUser;
-    //收集错误信息
-    const errors: SignUpErrors = {
-      username: [],
-      password: [],
-      passwordConfirmation: []
-    };
-    //1. 用户名错误
-    let cleanUsername = username.trim();
-    console.log(cleanUsername);
-    let existUser = await findUser(cleanUsername);
-    console.log(existUser.username);
-    if (cleanUsername === '') errors.username.push('用户名不能为空');
-    if (cleanUsername.length > 10 || cleanUsername.length < 3) errors.username.push('用户名长度要求3-10个字符');
-    if (cleanUsername === existUser.username) {
-      console.log('hi');
-      errors.username.push('该用户名已存在');
-    }
-    if (!/^\w*$/.test(username)) errors.username.push('用户名只允许出现数字、英文字母和下划线');
-    //2. 密码错误
-    if (password == '') errors.password.push('密码不能为空');
-    //3. 密码确认错误
-    if (password !== passwordConfirmation) errors.passwordConfirmation.push('两次密码不一致');
-    //存在错误
-    const hasError = Object.values(errors).find(error => error.length > 0);
-    if (hasError) {
+    const user = new User(username, password);
+    await user.validate(signUpUser);
+    if (user.hasError()) {
       //无法接受的实体
       res.statusCode = 422;
       res.setHeader('Content-Type', 'application/json');
-      res.write(JSON.stringify(errors));
+      res.write(JSON.stringify(user.errors));
       res.end();
     } else {
       //TODO: 仅使用md5哈希，需要添加加密方式
       let passwordDigest = md5(password);
-      let user = {username, passwordDigest};
-      return addUser(user).then(
+      let newUser = {username, passwordDigest};
+      return addUser(newUser).then(
         () => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
@@ -49,10 +28,10 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
         },
         (error) => {
           //数据库校验，兜底
-          errors.username.push(error.message);
+          user.errors.username.push(error.message);
           res.statusCode = 500;
           res.setHeader('Content-Type', 'application/json');
-          res.write(JSON.stringify(errors));
+          res.write(JSON.stringify(user.errors));
           res.end();
         }
       );
