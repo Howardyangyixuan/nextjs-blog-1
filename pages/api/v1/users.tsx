@@ -1,6 +1,6 @@
 import {NextApiHandler, NextApiRequest, NextApiResponse} from 'next';
-import {addUser} from 'lib/users';
-import {SignUpUser, SignUpErrors} from '../../../custom';
+import {addUser, findUser} from 'lib/users';
+import {SignUpUser, SignUpErrors, User} from '../../../custom';
 import md5 from 'md5';
 
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -12,14 +12,21 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
       password: [],
       passwordConfirmation: []
     };
-    //用户名错误
+    //1. 用户名错误
     let cleanUsername = username.trim();
+    console.log(cleanUsername);
+    let existUser = await findUser(cleanUsername);
+    console.log(existUser.username);
     if (cleanUsername === '') errors.username.push('用户名不能为空');
     if (cleanUsername.length > 10 || cleanUsername.length < 3) errors.username.push('用户名长度要求3-10个字符');
+    if (cleanUsername === existUser.username) {
+      console.log('hi');
+      errors.username.push('该用户名已存在');
+    }
     if (!/^\w*$/.test(username)) errors.username.push('用户名只允许出现数字、英文字母和下划线');
-    //密码错误
+    //2. 密码错误
     if (password == '') errors.password.push('密码不能为空');
-    //密码确认错误
+    //3. 密码确认错误
     if (password !== passwordConfirmation) errors.passwordConfirmation.push('两次密码不一致');
     //存在错误
     const hasError = Object.values(errors).find(error => error.length > 0);
