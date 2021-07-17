@@ -41,7 +41,8 @@ var CreateUsers1626269745833 = /*#__PURE__*/function () {
                     isPrimary: true
                   }, {
                     name: 'username',
-                    type: 'varchar'
+                    type: 'varchar',
+                    isUnique: true
                   }, {
                     name: 'passwordDigest',
                     type: 'varchar'

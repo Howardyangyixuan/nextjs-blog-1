@@ -1,8 +1,3 @@
-import {NextApiHandler, NextApiRequest, NextApiResponse} from 'next';
-import path from 'path';
-import {promises as fsPromise} from 'fs';
-import * as fs from 'fs';
-import matter from 'gray-matter';
 import {getDatabaseConnection} from './getDatabaseConnection';
 import {Post} from '../src/entity/Post';
 

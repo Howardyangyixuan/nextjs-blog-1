@@ -33,18 +33,20 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
       //TODO: 仅使用md5哈希，需要添加加密方式
       let passwordDigest = md5(password);
       let user = {username, passwordDigest};
-      addUser(user).then(
+      return addUser(user).then(
         () => {
-          console.log('hi');
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');
           res.write(JSON.stringify(user));
-          res.end(JSON.stringify('添加成功'));
+          res.end();
         },
         (error) => {
+          //数据库校验，兜底
+          errors.username.push(error.message);
           res.statusCode = 500;
           res.setHeader('Content-Type', 'application/json');
-          res.end(JSON.stringify(error));
+          res.write(JSON.stringify(errors));
+          res.end();
         }
       );
     }

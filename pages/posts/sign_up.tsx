@@ -1,7 +1,7 @@
 import {NextPage} from 'next';
 import React, {useCallback, useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
-import {SignUpUser,SignUpErrors} from '../../custom';
+import {SignUpUser, SignUpErrors} from '../../custom';
 
 const SignUp: NextPage = () => {
   const [signUpData, setSignUpData] = useState<SignUpUser>(
@@ -20,10 +20,11 @@ const SignUp: NextPage = () => {
   );
   const onSubmit = useCallback((e) => {
     e.preventDefault();
-    console.log('保存数据');
     axios.post('/api/v1/users', signUpData)
       .then(
-        () => {}, (error) => {
+        (user) => {
+          console.log(user);
+        }, (error) => {
           const response: AxiosResponse = error.response;
           setErrors({...errors, ...response.data});
         });

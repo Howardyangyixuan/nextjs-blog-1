@@ -15,7 +15,8 @@ export class CreateUsers1626269745833 implements MigrationInterface {
           },
           {
             name: 'username',
-            type: 'varchar'
+            type: 'varchar',
+            isUnique: true
           },
           {
             name: 'passwordDigest',
@@ -27,7 +28,7 @@ export class CreateUsers1626269745833 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('users')
+    await queryRunner.dropTable('users');
   }
 
 }
