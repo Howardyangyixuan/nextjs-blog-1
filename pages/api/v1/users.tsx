@@ -2,7 +2,7 @@ import {NextApiHandler, NextApiRequest, NextApiResponse} from 'next';
 import {addUser, findUser} from 'lib/users';
 import {SignUpUser, SignUpErrors} from '../../../custom';
 import md5 from 'md5';
-import {User} from '../../../src/entity/User';
+import {User} from '../../class/User';
 
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
     const signUpUser: SignUpUser = req.body;
