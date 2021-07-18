@@ -1,6 +1,15 @@
-import {Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany} from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  OneToMany,
+  BeforeInsert, BeforeUpdate
+} from 'typeorm';
 import {Post} from './Post';
 import {Comment} from './Comment';
+import md5 from 'md5';
 
 @Entity('users')
 export class User {
@@ -10,6 +19,8 @@ export class User {
 
   @Column({type: 'varchar', unique: true})
   username: string;
+
+  password: string;
 
   @Column('varchar')
   passwordDigest: string;
@@ -28,8 +39,12 @@ export class User {
   @OneToMany(() => Comment, comment => comment.user)
   comments: Comment[];
 
-  constructor(username: string, passwordDigest: string) {
+  constructor(username: string, password: string) {
     this.username = username;
-    this.passwordDigest = passwordDigest;
+    this.password = password;
+  }
+
+  generatePasswordDigest() {
+    this.passwordDigest = md5(this.password);
   }
 }

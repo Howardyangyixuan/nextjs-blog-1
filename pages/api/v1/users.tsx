@@ -1,13 +1,12 @@
 import {NextApiHandler, NextApiRequest, NextApiResponse} from 'next';
-import {addUser, findUser} from 'lib/users';
-import {SignUpUser, SignUpErrors} from '../../../custom';
-import md5 from 'md5';
-import {User} from '../../class/User';
+import {addUser} from 'lib/users';
+import {SignUpUser} from '../../class/SignUpUser';
+import {User} from '../../../src/entity/User';
 
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
     const signUpUser: SignUpUser = req.body;
-    const {username, password, passwordConfirmation} = signUpUser;
-    const user = new User(username, password);
+    const {username, password} = signUpUser;
+    const user = new SignUpUser(username, password);
     await user.validate(signUpUser);
     if (user.hasError()) {
       //无法接受的实体
@@ -17,9 +16,9 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
       res.end();
     } else {
       //TODO: 仅使用md5哈希，需要添加加密方式
-      let passwordDigest = md5(password);
-      let newUser = {username, passwordDigest};
-      return addUser(newUser).then(
+      console.log('-----------');
+      user.generatePasswordDigest()
+      return addUser(user).then(
         () => {
           res.statusCode = 200;
           res.setHeader('Content-Type', 'application/json');

@@ -12,5 +12,5 @@ export type SignUpUser = {
 
 export type User = {
   username: string
-  passwordDigest: string
+  password: string
 }

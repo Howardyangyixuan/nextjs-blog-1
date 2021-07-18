@@ -1,21 +1,13 @@
-import {SignUpErrors, SignUpUser} from '../../custom';
+import {SignUpErrors} from '../../custom';
 import {findUser} from '../../lib/users';
+import {User} from '../../src/entity/User';
 
-export class User {
+export class SignUpUser extends User {
 
-  id: number;
+  passwordConfirmation: string;
 
-  username: string;
-
-  passwordDigest: string;
-
-  createdAt: Date;
-
-  updatedAt: Date;
-
-  constructor(username: string, passwordDigest: string) {
-    this.username = username;
-    this.passwordDigest = passwordDigest;
+  constructor(username: string, password: string) {
+    super(username,password)
   }
   //收集错误信息
    errors: SignUpErrors = {
@@ -28,6 +20,7 @@ export class User {
     //存在错误
     return Object.values(this.errors).find(error => error.length > 0);
   }
+
   async validate(signUpUser:SignUpUser){
     //1. 用户名错误
     const {username, password, passwordConfirmation} = signUpUser;
