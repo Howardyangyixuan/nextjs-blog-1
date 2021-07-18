@@ -44,6 +44,8 @@ export class User {
     this.password = password;
   }
 
+  //但目前没有生效，不知道为什么，是手动执行的
+  @BeforeInsert()
   generatePasswordDigest() {
     this.passwordDigest = md5(this.password);
   }

@@ -1,30 +1,33 @@
 import {SignUpErrors} from '../../custom';
 import {findUser} from '../../lib/users';
 import {User} from '../../src/entity/User';
+import _ from 'lodash';
+import {isError} from 'util';
 
 export class SignUpUser extends User {
 
   passwordConfirmation: string;
 
-  constructor(username: string, password: string) {
-    super(username,password)
+  constructor(username: string, password: string, passwordConfirmation: string) {
+    super(username, password);
+    this.passwordConfirmation = passwordConfirmation;
   }
+
   //收集错误信息
-   errors: SignUpErrors = {
+  errors: SignUpErrors = {
     username: [],
     password: [],
     passwordConfirmation: []
   };
 
-  hasError(){
+  hasError() {
     //存在错误
     return Object.values(this.errors).find(error => error.length > 0);
   }
 
-  async validate(signUpUser:SignUpUser){
+  async validate() {
     //1. 用户名错误
-    const {username, password, passwordConfirmation} = signUpUser;
-    let cleanUsername = username.trim();
+    let cleanUsername = this.username.trim();
     console.log(cleanUsername);
     let existUser = await findUser(cleanUsername);
     if (cleanUsername === '') this.errors.username.push('用户名不能为空');
@@ -32,10 +35,20 @@ export class SignUpUser extends User {
     if (existUser) {
       this.errors.username.push('该用户名已存在');
     }
-    if (!/^\w*$/.test(username)) this.errors.username.push('用户名只允许出现数字、英文字母和下划线');
+    if (!/^\w*$/.test(this.username)) this.errors.username.push('用户名只允许出现数字、英文字母和下划线');
     //2. 密码错误
-    if (password == '') this.errors.password.push('密码不能为空');
+    if (this.password == '') this.errors.password.push('密码不能为空');
     //3. 密码确认错误
-    if (password !== passwordConfirmation) this.errors.passwordConfirmation.push('两次密码不一致');
+    if (this.password !== this.passwordConfirmation) this.errors.passwordConfirmation.push('两次密码不一致');
+  }
+
+  toJSON() {
+    // return _.omit(this, ['password', 'passwordDigest']);
+    return {
+      username: this.username,
+      id: this.id,
+      updatedAt: this.updatedAt,
+      createdAt: this.createdAt
+    };
   }
 }

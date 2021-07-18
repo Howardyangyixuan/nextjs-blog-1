@@ -4,10 +4,9 @@ import {SignUpUser} from '../../class/SignUpUser';
 import {User} from '../../../src/entity/User';
 
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
-    const signUpUser: SignUpUser = req.body;
-    const {username, password} = signUpUser;
-    const user = new SignUpUser(username, password);
-    await user.validate(signUpUser);
+    const {username, password, passwordConfirmation} = req.body;
+    const user = new SignUpUser(username, password, passwordConfirmation);
+    await user.validate();
     if (user.hasError()) {
       //无法接受的实体
       res.statusCode = 422;
@@ -17,7 +16,7 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
     } else {
       //TODO: 仅使用md5哈希，需要添加加密方式
       console.log('-----------');
-      user.generatePasswordDigest()
+      user.generatePasswordDigest();
       return addUser(user).then(
         () => {
           res.statusCode = 200;
