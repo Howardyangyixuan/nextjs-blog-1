@@ -1,6 +1,8 @@
-export interface SignUpErrors {
+export interface SignInErrors {
   username: string[]
   password: string[]
+}
+export interface SignUpErrors extends SignInErrors{
   passwordConfirmation: string[]
 }
 
