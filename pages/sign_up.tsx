@@ -27,7 +27,8 @@ const SignUp: NextPage = () => {
           window.location.href = '/sign_in';
         }, (error) => {
           const response: AxiosResponse = error.response;
-          setErrors({...errors, ...response.data});
+          console.log(errors);
+          setErrors({...response.data});
         });
   }, [signUpData]);
 

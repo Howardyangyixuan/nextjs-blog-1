@@ -1,10 +1,10 @@
 import {NextPage} from 'next';
 import React, {useCallback, useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
-import {SignUpUser, SignUpErrors} from '../../custom';
+import {SignUpUser, SignUpErrors} from '../custom';
 
 const SignUp: NextPage = () => {
-  const [signUpData, setSignUpData] = useState<SignUpUser>(
+  const [signInData, setSignInData] = useState<SignUpUser>(
     {
       username: '',
       password: '',
@@ -20,41 +20,36 @@ const SignUp: NextPage = () => {
   );
   const onSubmit = useCallback((e) => {
     e.preventDefault();
-    axios.post('/api/v1/users', signUpData)
+    axios.post('/api/v1/sessions', signInData)
       .then(
         (user) => {
           console.log(user);
+          window.alert('登录成功');
         }, (error) => {
           const response: AxiosResponse = error.response;
-          setErrors({...errors, ...response.data});
+          setErrors({...response.data});
         });
-  }, [signUpData]);
+  }, [signInData]);
 
   return (
     <>
-      <div>注册</div>
-      {JSON.stringify(signUpData)}
+      <div>登录</div>
+      {JSON.stringify(signInData)}
       <hr/>
       {JSON.stringify(errors)}
       <hr/>
       <form onSubmit={onSubmit}>
         <div>
           <label>用户名</label>
-          <input type="text" value={signUpData.username}
-                 onChange={(e) => setSignUpData({...signUpData, username: e.target.value})}/>
+          <input type="text" value={signInData.username}
+                 onChange={(e) => setSignInData({...signInData, username: e.target.value})}/>
           {errors.username.length > 0 ? <div>{errors.username.join(' ')}</div> : null}
         </div>
         <div>
           <label>密码</label>
-          <input type="password" value={signUpData.password}
-                 onChange={(e) => setSignUpData({...signUpData, password: e.target.value})}/>
+          <input type="password" value={signInData.password}
+                 onChange={(e) => setSignInData({...signInData, password: e.target.value})}/>
           {errors.password.length > 0 ? <div>{errors.password.join(' ')}</div> : null}
-        </div>
-        <div>
-          <label>确认密码</label>
-          <input type="password" value={signUpData.passwordConfirmation}
-                 onChange={(e) => setSignUpData({...signUpData, passwordConfirmation: e.target.value})}/>
-          {errors.passwordConfirmation.length > 0 ? <div>{errors.passwordConfirmation.join(' ')}</div> : null}
         </div>
         <button type="submit">提交</button>
       </form>
