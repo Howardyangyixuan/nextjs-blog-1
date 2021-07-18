@@ -14,6 +14,12 @@ export class SignInUser extends User {
     password: [],
   };
 
+  assign(user: User) {
+    this.id = user.id;
+    this.updatedAt = user.updatedAt;
+    this.createdAt = user.createdAt;
+  }
+
   hasError() {
     //存在错误
     return Object.values(this.errors).find(error => error.length > 0);
@@ -27,6 +33,7 @@ export class SignInUser extends User {
     if (cleanUsername === '') this.errors.username.push('用户名不能为空');
     if (cleanUsername.length > 10 || cleanUsername.length < 3) this.errors.username.push('用户名长度要求3-10个字符');
     if (existUser) {
+      this.assign(existUser);
       this.generatePasswordDigest();
       if (existUser.passwordDigest !== this.passwordDigest) {
         this.errors.password.push('密码不匹配');
