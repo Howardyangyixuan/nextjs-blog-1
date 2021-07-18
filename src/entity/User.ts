@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  BeforeInsert, BeforeUpdate
+  BeforeInsert
 } from 'typeorm';
 import {Post} from './Post';
 import {Comment} from './Comment';
@@ -48,5 +48,15 @@ export class User {
   @BeforeInsert()
   generatePasswordDigest() {
     this.passwordDigest = md5(this.password);
+  }
+
+  toJSON() {
+    // return _.omit(this, ['password', 'passwordDigest']);
+    return {
+      username: this.username,
+      id: this.id,
+      updatedAt: this.updatedAt,
+      createdAt: this.createdAt
+    };
   }
 }

@@ -65,6 +65,17 @@ var User = (_dec = (0, _typeorm.Entity)('users'), _dec2 = (0, _typeorm.PrimaryGe
     value: function generatePasswordDigest() {
       this.passwordDigest = (0, _md["default"])(this.password);
     }
+  }, {
+    key: "toJSON",
+    value: function toJSON() {
+      // return _.omit(this, ['password', 'passwordDigest']);
+      return {
+        username: this.username,
+        id: this.id,
+        updatedAt: this.updatedAt,
+        createdAt: this.createdAt
+      };
+    }
   }]);
   return User;
 }(), _temp), (_descriptor = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "id", [_dec2], {

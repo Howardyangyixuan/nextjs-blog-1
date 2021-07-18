@@ -9,6 +9,6 @@ export const addUser = async (user: User) => {
 };
 export const findUser = async (username: string) => {
   const connection = await getDatabaseConnection();
-  let users = await connection.manager.find('User', {username});
-  return users[0];
+  const users = await connection.manager.find('User', {username});
+  return users[0] as User;
 };

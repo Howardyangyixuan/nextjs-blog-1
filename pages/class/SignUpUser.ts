@@ -1,8 +1,6 @@
 import {SignUpErrors} from '../../custom';
 import {findUser} from '../../lib/users';
 import {User} from '../../src/entity/User';
-import _ from 'lodash';
-import {isError} from 'util';
 
 export class SignUpUser extends User {
 
@@ -40,15 +38,5 @@ export class SignUpUser extends User {
     if (this.password == '') this.errors.password.push('密码不能为空');
     //3. 密码确认错误
     if (this.password !== this.passwordConfirmation) this.errors.passwordConfirmation.push('两次密码不一致');
-  }
-
-  toJSON() {
-    // return _.omit(this, ['password', 'passwordDigest']);
-    return {
-      username: this.username,
-      id: this.id,
-      updatedAt: this.updatedAt,
-      createdAt: this.createdAt
-    };
   }
 }
