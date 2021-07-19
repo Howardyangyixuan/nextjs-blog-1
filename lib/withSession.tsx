@@ -13,10 +13,10 @@ export type NextIronHandler = (
   res: NextApiResponse,
 ) => void | Promise<void>;
 
+console.log(process.env.SECRET_COOKIE_PASSWORD);
 const withSession = (handler: NextIronHandler | NextIronContextHandler) =>
   withIronSession(handler, {
-    // password: process.env.SECRET_COOKIE_PASSWORD,
-    password: 'vUJxmZieAq2sF1ZF3iVFBagHGgyBgNjo',
+    password: process.env.SECRET_COOKIE_PASSWORD,
     cookieName: 'blog',
     // cookieOptions: {
     //   // the next line allows to use the session in non-https environments like
