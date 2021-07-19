@@ -2,8 +2,15 @@ import {NextPage} from 'next';
 import React, {useCallback, useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
 import {SignUpUser, SignUpErrors} from '../custom';
+import withSession, {NextIronPageContext} from '../lib/withSession';
+import {User} from '../src/entity/User';
 
-const SignUp: NextPage = () => {
+type userSession = {
+  user: User
+}
+
+const SignIn: NextPage<userSession> = (props) => {
+  console.log(props.user);
   const [signInData, setSignInData] = useState<SignUpUser>(
     {
       username: '',
@@ -34,6 +41,11 @@ const SignUp: NextPage = () => {
   return (
     <>
       <div>登录</div>
+      {
+        props.user ?
+          <div>当前登录用户为{props.user.username}</div> : null
+      }
+      <hr/>
       {JSON.stringify(signInData)}
       <hr/>
       {JSON.stringify(errors)}
@@ -56,4 +68,13 @@ const SignUp: NextPage = () => {
     </>
   );
 };
-export default SignUp;
+export default SignIn;
+
+export const getServerSideProps = withSession(async (context: NextIronPageContext) => {
+  const user = await context.req.session.get('currentUser');
+  return {
+    props: {
+      user
+    }
+  };
+});

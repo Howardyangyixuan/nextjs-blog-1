@@ -1,8 +1,9 @@
-import {NextApiHandler} from 'next';
 import {SignInUser} from '../../class/SignInUser';
+import withSession from '../../../lib/withSession';
 
-const Sessions: NextApiHandler = async (req, res) => {
+export default withSession(async (req, res) => {
   const {username, password} = req.body;
+  console.log(req.session);
   let user = new SignInUser(username, password);
   await user.validate();
   if (user.hasError()) {
@@ -11,11 +12,11 @@ const Sessions: NextApiHandler = async (req, res) => {
     res.write(JSON.stringify(user.errors));
     res.end();
   } else {
+    req.session.set('currentUser',user)
+    await req.session.save()
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json;charset=utf-8');
     res.write(JSON.stringify(user));
     res.end();
   }
-};
-
-export default Sessions;
+});
