@@ -1,25 +1,12 @@
 import {NextPage} from 'next';
-import React, {useCallback, useState} from 'react';
-import {Form} from '../../components/Form';
-import {Post, PostErrors} from '../../custom';
+import React from 'react';
 import axios, {AxiosResponse} from 'axios';
+import {useForm} from '../../hooks/useForm';
 
 const PostsNew: NextPage = () => {
-  const [post, setPost] = useState<Post>(
-    {
-      title: '',
-      content: '',
-    }
-  );
-  const [errors, setErrors] = useState<PostErrors>(
-    {
-      title: [],
-      content: [],
-    }
-  );
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-    axios.post('/api/v1/posts', post)
+  const initFormData = {title: '', content: '',};
+  const onSubmit = (formData: typeof initFormData) => {
+    axios.post('/api/v1/posts', formData)
       .then(
         (res) => {
           console.log(res);
@@ -28,34 +15,18 @@ const PostsNew: NextPage = () => {
           const response: AxiosResponse = error.response;
           setErrors({...response.data});
         });
-  }, [post]);
-
-  const onChange = useCallback((key, value) => {
-    setPost({...post, [key]: value});
-  }, [post]);
-
+  };
+  const {form, setErrors} = useForm({
+    initFormData,
+    fields: [
+      {label: '标题', type: 'text', key: 'title'},
+      {label: '内容', type: 'textarea', key: 'content'}],
+    onSubmit,
+    buttons: <button type='submit'>提交</button>
+  });
   return (
     <div>
-      {JSON.stringify(post)}
-      <Form
-        onSubmit={onSubmit}
-        buttons={
-          <div>
-            <button type='submit'>提交</button>
-          </div>}
-        fields={[
-          {
-            label: '标题', type: 'text', value: post.title,
-            onChange: e => onChange('title', e.target.value),
-            errors: errors.title
-          },
-          {
-            label: '内容', type: 'textarea', value: post.content,
-            onChange: e => onChange('content', e.target.value),
-            errors: errors.content
-          },
-        ]}
-      />
+      {form}
     </div>
   );
 };
