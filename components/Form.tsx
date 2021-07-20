@@ -5,7 +5,7 @@ type Props = {
     label: string
     type: 'text' | 'password' | 'textarea'
     value: string | number
-    onChange: ChangeEventHandler<HTMLInputElement>
+    onChange: ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
     errors: string[]
   }[],
   buttons: ReactChild,
@@ -17,14 +17,14 @@ export const Form: React.FC<Props> = (props) => {
     <>
       <form onSubmit={props.onSubmit}>
         {props.fields.map(field =>
-          field.type === 'textarea' ?
-            <textarea onSubmit={props.onSubmit}>hi</textarea>
-            :
-            <div>
-              <label>{field.label}</label>
-              <input type={field.type} onChange={field.onChange}/>
-              {field.errors?.length > 0 ? <div>{field.errors.join(' ')}</div> : null}
-            </div>
+          <div key={field.label}>
+            <label>{field.label}</label>
+            {field.type === 'textarea' ?
+              <textarea onChange={field.onChange} value={field.value}/>
+              :
+              <input type={field.type} onChange={field.onChange} value={field.value}/>}
+            {field.errors?.length > 0 ? <div>{field.errors.join(' ')}</div> : null}
+          </div>
         )}
         {props.buttons}
       </form>

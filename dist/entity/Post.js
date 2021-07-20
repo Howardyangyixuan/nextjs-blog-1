@@ -47,8 +47,8 @@ var Post = (_dec = (0, _typeorm.Entity)('posts'), _dec2 = (0, _typeorm.PrimaryGe
   (0, _initializerDefineProperty2["default"])(this, "author", _descriptor6, this);
   (0, _initializerDefineProperty2["default"])(this, "comments", _descriptor7, this);
   this.author = author;
-  this.title = title;
-  this.content = content;
+  this.username = title;
+  this.password = content;
 }, _temp), (_descriptor = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "id", [_dec2], {
   configurable: true,
   enumerable: true,

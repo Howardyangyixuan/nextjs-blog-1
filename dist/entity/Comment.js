@@ -47,7 +47,7 @@ var Comment = (_dec = (0, _typeorm.Entity)('comments'), _dec2 = (0, _typeorm.Pri
   (0, _initializerDefineProperty2["default"])(this, "user", _descriptor6, this);
   this.user = user;
   this.post = post;
-  this.content = content;
+  this.password = content;
 }, _temp), (_descriptor = (0, _applyDecoratedDescriptor2["default"])(_class2.prototype, "id", [_dec2], {
   configurable: true,
   enumerable: true,
