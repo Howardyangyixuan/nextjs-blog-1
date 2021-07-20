@@ -4,6 +4,7 @@ import axios from 'axios';
 import withSession, {NextIronPageContext} from '../lib/withSession';
 import {User} from '../src/entity/User';
 import {useForm} from '../hooks/useForm';
+import queryString from 'query-string';
 
 type userSession = {
   user: User
@@ -20,7 +21,13 @@ const SignIn: NextPage<userSession> = (props) => {
       buttons: <button type="submit">登录</button>,
       submit: {
         request: (formData) => axios.post('/api/v1/sessions', formData),
-        message: '成功登录'
+        success: () => {
+          window.alert('登录成功');
+          const parsed = queryString.parse(location.search);
+          console.log(location.search);
+          console.log(parsed);
+          window.location.href = parsed.return_to.toString();
+        }
       }
     });
   return (
