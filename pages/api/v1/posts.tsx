@@ -1,12 +1,17 @@
-import {NextApiRequest, NextApiResponse} from 'next';
-import {getPosts} from 'lib/posts';
+import {getPosts, savePost} from 'lib/posts';
+import {Post} from '../../../src/entity/Post';
+import withSession, {NextIronHandler} from '../../../lib/withSession';
 
-const Posts = async (req: NextApiRequest, res: NextApiResponse) => {
+const Posts: NextIronHandler = withSession(async (req, res) => {
   console.log(req.method);
   if (req.method === 'POST') {
+    const {title, content} = req.body;
+    const user = req.session.get('currentUser');
+    const post = new Post(user, title, content);
+    const newPost = await savePost(post);
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
-    res.end('提交成功');
+    res.end(JSON.stringify(newPost));
   } else if (req.method === 'GET') {
     res.statusCode = 200;
     let content = await getPosts();
@@ -17,6 +22,6 @@ const Posts = async (req: NextApiRequest, res: NextApiResponse) => {
     res.setHeader('Content-Type', 'application/json');
     res.end('method不匹配');
   }
-};
+});
 export default Posts;
 
