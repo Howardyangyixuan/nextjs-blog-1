@@ -60,7 +60,6 @@ export function useForm<T>(options: useFormOptions<T>) {
     </>
   );
   return {
-    form,
-    setErrors
+    form
   };
 }
