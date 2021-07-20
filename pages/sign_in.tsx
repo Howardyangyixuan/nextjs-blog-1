@@ -1,5 +1,5 @@
 import {NextPage} from 'next';
-import React, {useCallback} from 'react';
+import React from 'react';
 import axios, {AxiosResponse} from 'axios';
 import withSession, {NextIronPageContext} from '../lib/withSession';
 import {User} from '../src/entity/User';
@@ -10,7 +10,7 @@ type userSession = {
 }
 
 const SignIn: NextPage<userSession> = (props) => {
-  const onSubmit = useCallback((formData) => {
+  const onSubmit = (formData: typeof initFormData) => {
     axios.post('/api/v1/sessions', formData)
       .then(
         (user) => {
@@ -20,11 +20,11 @@ const SignIn: NextPage<userSession> = (props) => {
           const response: AxiosResponse = error.response;
           setErrors({...response.data});
         });
-  }, []);
-
+  };
+  const initFormData = {username: '初始值', password: '初始密码'};
   const {form, setErrors} = useForm(
     {
-      initFormData: {username: '初始值', password: '初始密码',},
+      initFormData,
       fields: [
         {label: '用户名', type: 'text', key: 'username'},
         {label: '密码', type: 'password', key: 'password'}
