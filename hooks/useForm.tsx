@@ -36,7 +36,12 @@ export function useForm<T>(options: useFormOptions<T>) {
       window.alert(submit.message);
     }, (error) => {
       const response: AxiosResponse<T> = error.response;
-      setErrors({...response.data});
+      if (response.status === 422) {
+        setErrors({...response.data});
+      } else if (response.status === 401) {
+        window.alert('尚未登录');
+        window.location.href = `/sign_in?return_to=${encodeURIComponent(window.location.pathname)}`;
+      }
     });
   }, [formData, submit, setErrors]);
   const form = (

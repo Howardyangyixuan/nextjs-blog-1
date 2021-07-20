@@ -7,11 +7,17 @@ const Posts: NextIronHandler = withSession(async (req, res) => {
   if (req.method === 'POST') {
     const {title, content} = req.body;
     const user = req.session.get('currentUser');
-    const post = new Post(user, title, content);
-    const newPost = await savePost(post);
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(newPost));
+    if (!user) {
+      res.statusCode = 401;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({errors: '尚未登录'}));
+    } else {
+      const post = new Post(user, title, content);
+      const newPost = await savePost(post);
+      res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(newPost));
+    }
   } else if (req.method === 'GET') {
     res.statusCode = 200;
     let content = await getPosts();
