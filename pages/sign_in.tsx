@@ -24,22 +24,14 @@ const SignIn: NextPage<userSession> = (props) => {
 
   const {form, setErrors} = useForm(
     {
-      username: '初始值',
-      password: '初始密码',
-    },
-    [
-      {
-        label: '用户名', type: 'text', key: 'username'
-      },
-      {
-        label: '密码', type: 'password', key: 'password'
-      }
-    ],
-    (<>
-      <button type="submit">登录</button>
-    </>),
-    onSubmit
-  );
+      initFormData: {username: '初始值', password: '初始密码',},
+      fields: [
+        {label: '用户名', type: 'text', key: 'username'},
+        {label: '密码', type: 'password', key: 'password'}
+      ],
+      buttons: <button type="submit">登录</button>,
+      onSubmit
+    });
   return (
     <>
       <div>登录</div>
