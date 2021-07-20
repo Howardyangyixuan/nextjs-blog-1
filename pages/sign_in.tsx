@@ -1,31 +1,17 @@
 import {NextPage} from 'next';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback} from 'react';
 import axios, {AxiosResponse} from 'axios';
-import {SignInUser, SignInErrors} from '../custom';
 import withSession, {NextIronPageContext} from '../lib/withSession';
 import {User} from '../src/entity/User';
-import {Form} from '../components/Form';
+import {useForm} from '../hooks/useForm';
 
 type userSession = {
   user: User
 }
 
 const SignIn: NextPage<userSession> = (props) => {
-  const [signInData, setSignInData] = useState<SignInUser>(
-    {
-      username: '',
-      password: '',
-    }
-  );
-  const [errors, setErrors] = useState<SignInErrors>(
-    {
-      username: [],
-      password: [],
-    }
-  );
-  const onSubmit = useCallback((e) => {
-    e.preventDefault();
-    axios.post('/api/v1/sessions', signInData)
+  const onSubmit = useCallback((formData) => {
+    axios.post('/api/v1/sessions', formData)
       .then(
         (user) => {
           console.log(user);
@@ -34,11 +20,26 @@ const SignIn: NextPage<userSession> = (props) => {
           const response: AxiosResponse = error.response;
           setErrors({...response.data});
         });
-  }, [signInData]);
+  }, []);
 
-  const onChange = useCallback((key, value) => {
-    setSignInData({...signInData, [key]: value});
-  }, [signInData]);
+  const {form, setErrors} = useForm(
+    {
+      username: '初始值',
+      password: '初始密码',
+    },
+    [
+      {
+        label: '用户名', type: 'text', key: 'username'
+      },
+      {
+        label: '密码', type: 'password', key: 'password'
+      }
+    ],
+    (<>
+      <button type="submit">登录</button>
+    </>),
+    onSubmit
+  );
   return (
     <>
       <div>登录</div>
@@ -46,28 +47,7 @@ const SignIn: NextPage<userSession> = (props) => {
         props.user ?
           <div>当前登录用户为{props.user.username}</div> : null
       }
-      <hr/>
-      {JSON.stringify(signInData)}
-      <hr/>
-      {JSON.stringify(errors)}
-      <hr/>
-      <Form
-        onSubmit={onSubmit}
-        buttons={<>
-          <button type="submit">提交</button>
-        </>}
-        fields={[
-          {
-            label: '用户名', type: 'text', value: signInData.username,
-            onChange: (e) => onChange('username', e.target.value),
-            errors: errors.username
-          },
-          {
-            label: '密码', type: 'password', value: signInData.password,
-            onChange: (e) => onChange('password', e.target.value),
-            errors: errors.password
-          }
-        ]}/>
+      {form}
     </>
   );
 };
