@@ -2,6 +2,7 @@ import {NextPage} from 'next';
 import React, {useCallback, useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
 import {SignUpUser, SignUpErrors} from '../custom';
+import {Form} from '../components/Form';
 
 const SignUp: NextPage = () => {
   const [signUpData, setSignUpData] = useState<SignUpUser>(
@@ -18,6 +19,11 @@ const SignUp: NextPage = () => {
       passwordConfirmation: []
     }
   );
+
+  const onChange = useCallback((key, value) => {
+    setSignUpData({...signUpData, [key]: value});
+  }, [signUpData]);
+
   const onSubmit = useCallback((e) => {
     e.preventDefault();
     axios.post('/api/v1/users', signUpData)
@@ -39,27 +45,29 @@ const SignUp: NextPage = () => {
       <hr/>
       {JSON.stringify(errors)}
       <hr/>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>用户名</label>
-          <input type="text" value={signUpData.username}
-                 onChange={(e) => setSignUpData({...signUpData, username: e.target.value})}/>
-          {errors.username.length > 0 ? <div>{errors.username.join(' ')}</div> : null}
-        </div>
-        <div>
-          <label>密码</label>
-          <input type="password" value={signUpData.password}
-                 onChange={(e) => setSignUpData({...signUpData, password: e.target.value})}/>
-          {errors.password.length > 0 ? <div>{errors.password.join(' ')}</div> : null}
-        </div>
-        <div>
-          <label>确认密码</label>
-          <input type="password" value={signUpData.passwordConfirmation}
-                 onChange={(e) => setSignUpData({...signUpData, passwordConfirmation: e.target.value})}/>
-          {errors.passwordConfirmation.length > 0 ? <div>{errors.passwordConfirmation.join(' ')}</div> : null}
-        </div>
-        <button type="submit">提交</button>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        fields={[
+          {
+            label: '用户名', type: 'text', value: signUpData.username,
+            onChange: (e) => onChange('username', e.target.value),
+            errors: errors.username
+          },
+          {
+            label: '密码', type: 'password', value: signUpData.password,
+            onChange: (e) => onChange('password', e.target.value),
+            errors: errors.password
+          },
+          {
+            label: '确认密码', type: 'password', value: signUpData.passwordConfirmation,
+            onChange: (e) => onChange('passwordConfirmation', e.target.value),
+            errors: errors.passwordConfirmation
+          }
+        ]}
+        buttons={<>
+          <button type="submit">提交</button>
+        </>}
+      />
     </>
   );
 };
