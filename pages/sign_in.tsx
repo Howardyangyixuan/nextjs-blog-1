@@ -1,6 +1,6 @@
 import {NextPage} from 'next';
 import React from 'react';
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 import withSession, {NextIronPageContext} from '../lib/withSession';
 import {User} from '../src/entity/User';
 import {useForm} from '../hooks/useForm';
@@ -10,27 +10,18 @@ type userSession = {
 }
 
 const SignIn: NextPage<userSession> = (props) => {
-  const onSubmit = (formData: typeof initFormData) => {
-    axios.post('/api/v1/sessions', formData)
-      .then(
-        (user) => {
-          console.log(user);
-          window.alert('登录成功');
-        }, (error) => {
-          const response: AxiosResponse = error.response;
-          setErrors({...response.data});
-        });
-  };
-  const initFormData = {username: '初始值', password: '初始密码'};
-  const {form, setErrors} = useForm(
+  const {form} = useForm(
     {
-      initFormData,
+      initFormData: {username: '初始值', password: '初始密码'},
       fields: [
         {label: '用户名', type: 'text', key: 'username'},
         {label: '密码', type: 'password', key: 'password'}
       ],
       buttons: <button type="submit">登录</button>,
-      onSubmit
+      submit: {
+        request: (formData) => axios.post('/api/v1/sessions', formData),
+        message: '成功登录'
+      }
     });
   return (
     <>

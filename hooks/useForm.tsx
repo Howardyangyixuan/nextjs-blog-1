@@ -1,4 +1,5 @@
 import React, {ReactChild, useCallback, useState} from 'react';
+import {AxiosResponse} from 'axios';
 
 type Field<T> = {
   label: string
@@ -10,11 +11,14 @@ type useFormOptions<T> = {
   initFormData: T;
   fields: Field<T>[];
   buttons: ReactChild
-  onSubmit: (formData: T) => void
+  submit: {
+    request: (formData: T) => Promise<AxiosResponse<T>>,
+    message: string
+  }
 }
 
 export function useForm<T>(options: useFormOptions<T>) {
-  const {initFormData, fields, buttons, onSubmit} = options;
+  const {initFormData, fields, buttons, submit} = options;
   const [formData, setFormData] = useState(initFormData);
   const [errors, setErrors] = useState(() => {
     const initErrors: { [key in keyof T]?: string[] } = {};
@@ -28,8 +32,13 @@ export function useForm<T>(options: useFormOptions<T>) {
   }, [formData]);
   const _onSubmit = useCallback((e) => {
     e.preventDefault();
-    onSubmit(formData);
-  }, [formData, onSubmit]);
+    submit.request(formData).then(() => {
+      window.alert(submit.message);
+    }, (error) => {
+      const response: AxiosResponse<T> = error.response;
+      setErrors({...response.data});
+    });
+  }, [formData, submit, setErrors]);
   const form = (
     <>
       <div>{JSON.stringify(formData)}</div>
