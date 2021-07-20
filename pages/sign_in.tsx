@@ -1,28 +1,26 @@
 import {NextPage} from 'next';
 import React, {useCallback, useState} from 'react';
 import axios, {AxiosResponse} from 'axios';
-import {SignUpUser, SignUpErrors} from '../custom';
+import {SignInUser, SignInErrors} from '../custom';
 import withSession, {NextIronPageContext} from '../lib/withSession';
 import {User} from '../src/entity/User';
+import {Form} from '../components/Form';
 
 type userSession = {
   user: User
 }
 
 const SignIn: NextPage<userSession> = (props) => {
-  console.log(props.user);
-  const [signInData, setSignInData] = useState<SignUpUser>(
+  const [signInData, setSignInData] = useState<SignInUser>(
     {
       username: '',
       password: '',
-      passwordConfirmation: ''
     }
   );
-  const [errors, setErrors] = useState<SignUpErrors>(
+  const [errors, setErrors] = useState<SignInErrors>(
     {
       username: [],
       password: [],
-      passwordConfirmation: []
     }
   );
   const onSubmit = useCallback((e) => {
@@ -38,6 +36,9 @@ const SignIn: NextPage<userSession> = (props) => {
         });
   }, [signInData]);
 
+  const onChange = useCallback((key, value) => {
+    setSignInData({...signInData, [key]: value});
+  }, [signInData]);
   return (
     <>
       <div>登录</div>
@@ -50,21 +51,23 @@ const SignIn: NextPage<userSession> = (props) => {
       <hr/>
       {JSON.stringify(errors)}
       <hr/>
-      <form onSubmit={onSubmit}>
-        <div>
-          <label>用户名</label>
-          <input type="text" value={signInData.username}
-                 onChange={(e) => setSignInData({...signInData, username: e.target.value})}/>
-          {errors.username.length > 0 ? <div>{errors.username.join(' ')}</div> : null}
-        </div>
-        <div>
-          <label>密码</label>
-          <input type="password" value={signInData.password}
-                 onChange={(e) => setSignInData({...signInData, password: e.target.value})}/>
-          {errors.password.length > 0 ? <div>{errors.password.join(' ')}</div> : null}
-        </div>
-        <button type="submit">提交</button>
-      </form>
+      <Form
+        onSubmit={onSubmit}
+        buttons={<>
+          <button type="submit">提交</button>
+        </>}
+        fields={[
+          {
+            label: '用户名', type: 'text', value: signInData.username,
+            onChange: (e) => onChange('username', e.target.value),
+            errors: errors.username
+          },
+          {
+            label: '密码', type: 'password', value: signInData.password,
+            onChange: (e) => onChange('password', e.target.value),
+            errors: errors.password
+          }
+        ]}/>
     </>
   );
 };
@@ -74,7 +77,7 @@ export const getServerSideProps = withSession(async (context: NextIronPageContex
   const user = await context.req.session.get('currentUser');
   return {
     props: {
-      user
+      user: user || ''
     }
   };
 });

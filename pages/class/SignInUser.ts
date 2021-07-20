@@ -30,8 +30,14 @@ export class SignInUser extends User {
     let cleanUsername = this.username.trim();
     console.log(cleanUsername);
     let existUser = await findUser(cleanUsername);
-    if (cleanUsername === '') this.errors.username.push('用户名不能为空');
-    if (cleanUsername.length > 10 || cleanUsername.length < 3) this.errors.username.push('用户名长度要求3-10个字符');
+    if (cleanUsername === '') {
+      this.errors.username.push('用户名不能为空');
+      return;
+    }
+    if (cleanUsername.length > 10 || cleanUsername.length < 3) {
+      this.errors.username.push('用户名长度要求3-10个字符');
+      return;
+    }
     if (existUser) {
       this.assign(existUser);
       this.generatePasswordDigest();
