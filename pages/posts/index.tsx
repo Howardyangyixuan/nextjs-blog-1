@@ -1,7 +1,8 @@
-import {GetStaticProps, NextApiRequest, NextApiResponse, NextPage} from 'next';
+import {GetServerSideProps, NextPage} from 'next';
 import React from 'react';
 import {getPosts} from '../../lib/posts';
 import Link from 'next/link';
+import queryString from 'query-string';
 
 type Post = {
   id: string;
@@ -9,14 +10,16 @@ type Post = {
   title: string;
 }
 type Props = {
-  posts: Post[]
+  posts: Post[],
+  page: number,
+  pages: number,
+  cnt: number
 }
 const PostsIndex: NextPage<Props> = (props) => {
-  // console.log(props.posts);
-  let posts = props.posts;
+  const {posts, page, pages, cnt} = props;
   return (
     <div>
-      <h1>文章列表</h1>
+      <h1>文章列表({cnt})</h1>
       {posts.length == 0 ? <div>正在构思中...目前还有没有文章</div> :
         <ul>
           {posts.map((post) => {
@@ -30,17 +33,34 @@ const PostsIndex: NextPage<Props> = (props) => {
           })}
         </ul>
       }
+      <footer>
+        第{page}页 共{pages}页
+        <div>
+          {page !== 1 ? <Link href={`?page=${page - 1}`}><a>上一页</a></Link> : null}
+        </div>
+        <div>
+          {page !== pages ? <Link href={`?page=${page + 1}`}><a>下一页</a></Link> : null}
+        </div>
+      </footer>
     </div>
   );
 };
 export default PostsIndex;
 
-export const getStaticProps: GetStaticProps = async () => {
-  const posts = await getPosts();
-  // console.log(posts);
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const index = context.req.url.indexOf('?');
+  const search = context.req.url.substr(index);
+  const parsed = queryString.parse(search);
+  const page = parseInt(parsed.page.toString()) || 1;
+  const perPage = 5;
+  const [posts, cnt] = await getPosts(page, perPage);
+  const pages = Math.ceil(cnt / perPage);
   return {
     props: {
-      posts
+      posts,
+      page,
+      cnt,
+      pages
     }
   };
 };

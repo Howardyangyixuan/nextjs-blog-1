@@ -1,12 +1,11 @@
 import {getDatabaseConnection} from './getDatabaseConnection';
 import {Post} from '../src/entity/Post';
 
-export const getPosts: () => Promise<Post[]> = async () => {
+export const getPosts: (page?: number, perPage?: number) => Promise<[Post[], number]> = async (page = 1, perPage = 5) => {
   const connection = await getDatabaseConnection();
-
-  let posts = await connection.manager.find('posts');
-  // console.log(posts);
-  return JSON.parse(JSON.stringify((posts)));
+  let posts = await connection.manager.findAndCount('posts', {skip: (page - 1) * perPage, take: perPage});
+  // console.log(JSON.parse(JSON.stringify(posts)));
+  return JSON.parse(JSON.stringify(posts));
 };
 
 export const getPost: (id: number) => Promise<Post> = async (id: number) => {
