@@ -1,18 +1,29 @@
 import React from 'react';
-import {NextPage, NextPageContext} from 'next';
+import {NextPage} from 'next';
 import {getPost} from '../../lib/posts';
 import {Post} from '../../src/entity/Post';
-import marked from 'marked'
+import marked from 'marked';
+import withSession, {NextIronHandler, NextIronPageContext} from '../../lib/withSession';
+import Link from 'next/link';
+import {User} from '../../custom';
 
 type Props = {
-  post: Post
+  post: Post,
+  currentUser:User | null
 }
 const Page: NextPage<Props> = (props) => {
-  const {post} = props;
+  const {post, currentUser} = props;
   return (
     <>
       <div className="wrapper">
-        <h1>{post.title}</h1>
+        <header>
+          <h1>{post.title}</h1>
+          {currentUser &&
+          <p>
+            <Link href={"/posts/[id]/edit"} as={`/posts/${post.id}/edit`}><a>编辑</a></Link>
+          </p>
+          }
+        </header>
         <article className="markdown-body" dangerouslySetInnerHTML={{__html: marked(post.content)}}>
         </article>
       </div>
@@ -29,14 +40,16 @@ const Page: NextPage<Props> = (props) => {
 };
 export default Page;
 
-export const getServerSideProps = async (context: NextPageContext) => {
+export const getServerSideProps: NextIronHandler = withSession(async (context: NextIronPageContext) => {
   let {id} = context.query;
   let post;
   if (typeof id === 'string') post = await getPost(parseInt(id));
   else post = await getPost(parseInt(id[0]));
+  const currentUser = context.req.session.get('currentUser') || null;
   return {
     props: {
-      post
+      post,
+      currentUser
     }
   };
-};
+});
