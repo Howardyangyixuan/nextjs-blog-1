@@ -19,15 +19,12 @@ export const getPosts: (page?: number, perPage?: number) => Promise<Posts> = asy
 
 export const getPost: (id: number) => Promise<Post> = async (id: number) => {
   const connection = await getDatabaseConnection();
-  //能否通过数据库查询语句优化查找
-  // const post = connection.getRepository(Post)
-  //   .createQueryBuilder('posts')
-  //   .where('post.id = :id', {id})
-  //   .getOne();
-  // console.log(post);
-  let posts = await connection.manager.find('posts');
-  // console.log(posts);
-  return JSON.parse(JSON.stringify((posts[id - 1])));
+  const post = await connection.getRepository('posts')
+    .createQueryBuilder('post')
+    .where('post.id = :id', {id})
+    .getOne();
+  console.log(post);
+  return JSON.parse(JSON.stringify(post));
 };
 
 export const getPostIds: () => Promise<string[]> = async () => {

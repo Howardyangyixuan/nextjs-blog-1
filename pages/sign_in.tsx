@@ -26,7 +26,7 @@ const SignIn: NextPage<userSession> = (props) => {
           const parsed = queryString.parse(location.search);
           console.log(location.search);
           console.log(parsed);
-          window.location.href = parsed.return_to.toString();
+          window.location.href = parsed.return_to?.toString() || 'sign_in';
         }
       }
     });
