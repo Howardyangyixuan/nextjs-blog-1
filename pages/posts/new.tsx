@@ -16,11 +16,33 @@ const PostsNew: NextPage = () => {
         window.location.href = '/posts';
       }
     },
-    buttons: <button type='submit'>提交</button>
+    buttons: <div className="actions">
+      <button type="submit">提交</button>
+    </div>
   });
   return (
-    <div>
-      {form}
+    <div className="postsNew">
+      <div className="form-wrapper">
+        {form}
+      </div>
+      <style jsx global>{`
+      .form-wrapper{
+        padding: 16px;
+      }
+      .postsNew .field-content textarea{
+        height: 20em; 
+        resize: none;
+      }
+      .postsNew .label-text{
+        width: 4em;
+        text-align:right;
+      }
+      .postsNew .actions{
+        text-align:center;
+        background: #a5a5ee;
+        padding: 4px 0;
+      }
+      `}</style>
     </div>
   );
 };
