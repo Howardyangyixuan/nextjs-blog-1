@@ -3,6 +3,7 @@ import React from 'react';
 import {getPosts} from '../../lib/posts';
 import Link from 'next/link';
 import queryString from 'query-string';
+import {usePager} from 'hooks/usePager';
 
 type Post = {
   id: string;
@@ -12,11 +13,14 @@ type Post = {
 type Props = {
   posts: Post[],
   page: number,
-  pages: number,
+  totalPage: number,
   cnt: number
 }
 const PostsIndex: NextPage<Props> = (props) => {
-  const {posts, page, pages, cnt} = props;
+  const {posts, page, totalPage, cnt} = props;
+  const {pager} = usePager({
+    page, totalPage,
+  });
   return (
     <div>
       <h1>文章列表({cnt})</h1>
@@ -34,13 +38,7 @@ const PostsIndex: NextPage<Props> = (props) => {
         </ul>
       }
       <footer>
-        第{page}页 共{pages}页
-        <div>
-          {page !== 1 ? <Link href={`?page=${page - 1}`}><a>上一页</a></Link> : null}
-        </div>
-        <div>
-          {page !== pages ? <Link href={`?page=${page + 1}`}><a>下一页</a></Link> : null}
-        </div>
+        {pager}
       </footer>
     </div>
   );
@@ -51,16 +49,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const index = context.req.url.indexOf('?');
   const search = context.req.url.substr(index);
   const parsed = queryString.parse(search);
-  const page = parseInt(parsed.page.toString()) || 1;
-  const perPage = 5;
-  const [posts, cnt] = await getPosts(page, perPage);
-  const pages = Math.ceil(cnt / perPage);
+  const _page = parseInt(parsed.page?.toString()) || 1;
+  const perPage = 3;
+  const {page,posts, cnt} = await getPosts(_page, perPage);
+  const totalPage = Math.ceil(cnt / perPage);
   return {
     props: {
       posts,
       page,
       cnt,
-      pages
+      totalPage
     }
   };
 };
