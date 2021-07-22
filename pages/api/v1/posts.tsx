@@ -3,7 +3,6 @@ import {Post} from '../../../src/entity/Post';
 import withSession, {NextIronHandler} from '../../../lib/withSession';
 
 const Posts: NextIronHandler = withSession(async (req, res) => {
-  console.log(req.method);
   if (req.method === 'POST') {
     const {title, content} = req.body;
     const user = req.session.get('currentUser');

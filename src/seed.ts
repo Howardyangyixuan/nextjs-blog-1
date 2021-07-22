@@ -15,7 +15,6 @@ createConnection().then(async connection => {
       const comment = new Comment(user1, post, `欢迎关注和转发howard的第${i}篇文章!`);
       await connection.manager.save(comment);
     }
-    // console.log(await connection.manager.find(Post));
   }
   await connection.close();
 }).catch(error => console.log(error));

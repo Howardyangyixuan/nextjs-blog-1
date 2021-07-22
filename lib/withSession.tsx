@@ -13,7 +13,6 @@ export type NextIronHandler = (
   res: NextApiResponse,
 ) => void | Promise<void>;
 
-console.log(process.env.SECRET_COOKIE_PASSWORD);
 const withSession = (handler: NextIronHandler | NextIronContextHandler) =>
   withIronSession(handler, {
     password: process.env.SECRET_COOKIE_PASSWORD,

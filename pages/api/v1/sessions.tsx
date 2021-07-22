@@ -3,7 +3,6 @@ import {SignInUser} from '../../../class/SignInUser';
 
 export default withSession(async (req, res) => {
   const {username, password} = req.body;
-  console.log(req.session);
   let user = new SignInUser(username, password);
   await user.validate();
   if (user.hasError()) {

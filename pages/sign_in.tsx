@@ -24,8 +24,6 @@ const SignIn: NextPage<userSession> = (props) => {
         success: () => {
           window.alert('登录成功');
           const parsed = queryString.parse(location.search);
-          console.log(location.search);
-          console.log(parsed);
           window.location.href = parsed.return_to?.toString() || 'sign_in';
         }
       }

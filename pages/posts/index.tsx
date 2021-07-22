@@ -50,8 +50,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const search = context.req.url.substr(index);
   const parsed = queryString.parse(search);
   const _page = parseInt(parsed.page?.toString()) || 1;
-  const perPage = 3;
-  const {page,posts, cnt} = await getPosts(_page, perPage);
+  const perPage = 10;
+  const {page, posts, cnt} = await getPosts(_page, perPage);
   const totalPage = Math.ceil(cnt / perPage);
   return {
     props: {

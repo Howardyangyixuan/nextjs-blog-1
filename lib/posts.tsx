@@ -6,7 +6,7 @@ type Posts = {
   posts: Post[],
   cnt: number
 }
-export const getPosts: (page?: number, perPage?: number) => Promise<Posts> = async (page = 1, perPage = 5) => {
+export const getPosts: (page?: number, perPage?: number) => Promise<Posts> = async (page = 1, perPage = 10) => {
   const connection = await getDatabaseConnection();
   if (page < 0) page = 1;
   let [posts, cnt] = await connection.manager.findAndCount('posts', {skip: (page - 1) * perPage, take: perPage});
@@ -23,7 +23,6 @@ export const getPost: (id: number) => Promise<Post> = async (id: number) => {
     .createQueryBuilder('post')
     .where('post.id = :id', {id})
     .getOne();
-  console.log(post);
   return JSON.parse(JSON.stringify(post));
 };
 

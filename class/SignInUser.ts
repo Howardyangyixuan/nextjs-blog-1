@@ -28,7 +28,6 @@ export class SignInUser extends User {
   async validate() {
     //1. 用户名错误
     let cleanUsername = this.username.trim();
-    console.log(cleanUsername);
     let existUser = await findUser(cleanUsername);
     if (cleanUsername === '') {
       this.errors.username.push('用户名不能为空');

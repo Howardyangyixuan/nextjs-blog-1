@@ -26,7 +26,6 @@ export class SignUpUser extends User {
   async validate() {
     //1. 用户名错误
     let cleanUsername = this.username.trim();
-    console.log(cleanUsername);
     let existUser = await findUser(cleanUsername);
     if (cleanUsername === '') this.errors.username.push('用户名不能为空');
     if (cleanUsername.length > 10 || cleanUsername.length < 3) this.errors.username.push('用户名长度要求3-10个字符');

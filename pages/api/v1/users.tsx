@@ -14,7 +14,6 @@ const Users = async (req: NextApiRequest, res: NextApiResponse) => {
       res.end();
     } else {
       //TODO: 仅使用md5哈希，需要添加加密方式
-      console.log('-----------');
       user.generatePasswordDigest();
       return addUser(user).then(
         () => {
