@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import _ from 'lodash';
 
 type Options = {
   page: number;
@@ -16,9 +15,10 @@ export const usePager = (options: Options) => {
   for (let i = 1; i <= totalPage; i++) {
     if (i == 1 || i == totalPage) pages.push(i);
     else if (i >= page - extend && i <= page + extend) pages.push(i);
+    else if (pages[pages.length - 1] != -1) {
+      pages.push(-1);
+    }
   }
-  pages = _.uniq(pages);
-  pages = pages.reduce((result, n) => n - (result[result.length - 1] || 0) === 1 ? result.concat(n) : result.concat(-1, n), [] as number[]);
   const pager = (
     <div className='wrapper'>
       {page !== 1 ? <Link href={_urlMaker(page - 1)}><a>上一页</a></Link> : null}
