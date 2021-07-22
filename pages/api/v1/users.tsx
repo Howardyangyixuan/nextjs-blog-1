@@ -1,7 +1,6 @@
-import {NextApiHandler, NextApiRequest, NextApiResponse} from 'next';
+import {NextApiRequest, NextApiResponse} from 'next';
 import {addUser} from 'lib/users';
-import {SignUpUser} from '../../class/SignUpUser';
-import {User} from '../../../src/entity/User';
+import {SignUpUser} from '../../../class/SignUpUser';
 
 const Users = async (req: NextApiRequest, res: NextApiResponse) => {
     const {username, password, passwordConfirmation} = req.body;

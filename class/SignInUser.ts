@@ -1,6 +1,6 @@
-import {SignInErrors} from '../../custom';
-import {User} from '../../src/entity/User';
-import {findUser} from '../../lib/users';
+import {User} from '../src/entity/User';
+import {SignInErrors} from '../custom';
+import {findUser} from '../lib/users';
 
 export class SignInUser extends User {
 

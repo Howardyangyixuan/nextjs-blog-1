@@ -1,5 +1,5 @@
-import {SignInUser} from '../../class/SignInUser';
 import withSession from '../../../lib/withSession';
+import {SignInUser} from '../../../class/SignInUser';
 
 export default withSession(async (req, res) => {
   const {username, password} = req.body;
