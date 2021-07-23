@@ -43,8 +43,8 @@ export default Page;
 export const getServerSideProps: NextIronHandler = withSession(async (context: NextIronPageContext) => {
   let {id} = context.query;
   let post;
-  if (typeof id === 'string') post = await getPost(parseInt(id));
-  else post = await getPost(parseInt(id[0]));
+  if (typeof id === 'string') post = await getPost(id);
+  else post = await getPost(id[0]);
   const currentUser = context.req.session.get('currentUser') || null;
   return {
     props: {

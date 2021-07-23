@@ -17,7 +17,7 @@ export const getPosts: (page?: number, perPage?: number) => Promise<Posts> = asy
   return JSON.parse(JSON.stringify({page, posts, cnt}));
 };
 
-export const getPost: (id: number) => Promise<Post> = async (id: number) => {
+export const getPost: (id: string) => Promise<Post> = async (id) => {
   const connection = await getDatabaseConnection();
   const post = await connection.getRepository('posts')
     .createQueryBuilder('post')
@@ -33,6 +33,6 @@ export const getPostIds: () => Promise<string[]> = async () => {
 };
 export const savePost: (post: Post) => Promise<Post> = async (post) => {
   const connection = await getDatabaseConnection();
-  let newPost = await connection.manager.insert('posts', post);
+  let newPost = await connection.manager.save('posts', post);
   return JSON.parse(JSON.stringify(newPost));
 };
