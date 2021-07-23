@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {NextPage} from 'next';
 import {getPost} from '../../lib/posts';
 import {Post} from '../../src/entity/Post';
@@ -6,21 +6,38 @@ import marked from 'marked';
 import withSession, {NextIronHandler, NextIronPageContext} from '../../lib/withSession';
 import Link from 'next/link';
 import {User} from '../../custom';
+import {useRouter} from 'next/router';
+import axios from 'axios';
+import {useNotFound} from '../../hooks/useNotFound';
 
 type Props = {
+  id: string | string[]
   post: Post,
-  currentUser:User | null
+  currentUser: User | null
 }
 const Page: NextPage<Props> = (props) => {
-  const {post, currentUser} = props;
+  const {post, currentUser, id} = props;
+  const router = useRouter();
+  const onRemove = useCallback(() => {
+    axios.delete(`/api/v1/posts?id=${id}`).then(() => {
+      // axios.delete(`/api/v1/posts/${id}`).then(() => {
+      window.alert('删除成功');
+      router.push('/posts');
+    }, () => {
+      window.alert('删除失败');
+    });
+  }, [id]);
+  if (!post) return useNotFound();
   return (
     <>
       <div className="wrapper">
         <header>
           <h1>{post.title}</h1>
           {currentUser &&
-          <p>
-            <Link href={"/posts/[id]/edit"} as={`/posts/${post.id}/edit`}><a>编辑</a></Link>
+          <p className="actions">
+            <Link href={'/posts/[id]/edit'} as={`/posts/${post.id}/edit`}><a>编辑</a></Link>
+            <button onClick={onRemove}>删除</button>
+            <Link href={'/posts'}><a>返回列表</a></Link>
           </p>
           }
         </header>
@@ -34,6 +51,12 @@ const Page: NextPage<Props> = (props) => {
         padding: 0 16px;
       }
       h1{padding-bottom: 16px; border-bottom: 1px solid #666;}
+      .actions > *{
+        margin: 4px; 
+      }
+      .actions > *:first-child{
+        margin-left: 0; 
+      }
       `}</style>
     </>
   );
@@ -48,6 +71,7 @@ export const getServerSideProps: NextIronHandler = withSession(async (context: N
   const currentUser = context.req.session.get('currentUser') || null;
   return {
     props: {
+      id,
       post,
       currentUser
     }

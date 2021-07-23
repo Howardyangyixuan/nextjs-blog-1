@@ -1,5 +1,6 @@
 import {getDatabaseConnection} from './getDatabaseConnection';
 import {Post} from '../src/entity/Post';
+import {DeleteResult} from 'typeorm';
 
 type Posts = {
   page: number,
@@ -23,7 +24,7 @@ export const getPost: (id: string) => Promise<Post> = async (id) => {
     .createQueryBuilder('post')
     .where('post.id = :id', {id})
     .getOne();
-  return JSON.parse(JSON.stringify(post));
+  return JSON.parse(JSON.stringify(post || null));
 };
 
 export const getPostIds: () => Promise<string[]> = async () => {
@@ -35,4 +36,10 @@ export const savePost: (post: Post) => Promise<Post> = async (post) => {
   const connection = await getDatabaseConnection();
   let newPost = await connection.manager.save('posts', post);
   return JSON.parse(JSON.stringify(newPost));
+};
+
+export const deletePost: (id: string) => Promise<DeleteResult> = async (id) => {
+  const connection = await getDatabaseConnection();
+  const result = await connection.manager.delete('Post', id);
+  return JSON.parse(JSON.stringify(result));
 };
