@@ -5,6 +5,7 @@ import withSession, {NextIronPageContext} from '../lib/withSession';
 import {User} from '../src/entity/User';
 import {useForm} from '../hooks/useForm';
 import queryString from 'query-string';
+import Link from 'next/link';
 
 type userSession = {
   user: User
@@ -30,12 +31,21 @@ const SignIn: NextPage<userSession> = (props) => {
     });
   return (
     <>
-      <div>登录</div>
-      {
-        props.user ?
-          <div>当前登录用户为{props.user.username}</div> : null
-      }
+      <h1>登录
+        {props.user ? <> 当前登录用户为{props.user.username}</> : null}</h1>
+      <p className='actions'>
+        <Link href={'/'}><a>返回首页</a></Link>
+        <Link href={'/sign_up'}><a>注册</a></Link>
+      </p>
       {form}
+      <style jsx>{`
+        .actions > *{
+        margin: 4px;
+      }
+        .actions > *:first-child{
+        margin-left: 0;
+      }`}
+      </style>
     </>
   );
 };

@@ -2,6 +2,7 @@ import {NextPage} from 'next';
 import React from 'react';
 import axios from 'axios';
 import {useForm} from '../hooks/useForm';
+import Link from 'next/link';
 
 const SignUp: NextPage = () => {
   const {form} = useForm(
@@ -19,17 +20,29 @@ const SignUp: NextPage = () => {
       buttons: <button type="submit">注册</button>,
       submit: {
         request: formData => axios.post('/api/v1/users', formData),
-        success: ()=>{
-          window.alert('注册成功')
-          window.location.href = '/sign_in'
+        success: () => {
+          window.alert('注册成功');
+          window.location.href = '/sign_in';
         }
       }
     }
   );
   return (
     <>
-      <div>注册</div>
+      <h1>注册</h1>
+      <p className='actions'>
+        <Link href={'/'}><a>返回首页</a></Link>
+        <Link href={'/sign_in'}><a>登录</a></Link>
+      </p>
       {form}
+      <style jsx>{`
+        .actions > *{
+        margin: 4px;
+      }
+        .actions > *:first-child{
+        margin-left: 0;
+      }`}
+      </style>
     </>
   );
 };

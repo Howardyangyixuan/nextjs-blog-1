@@ -5,6 +5,7 @@ import {Post} from '../../../src/entity/Post';
 import {getPost} from '../../../lib/posts';
 import React from 'react';
 import {useNotFound} from '../../../hooks/useNotFound';
+import Link from 'next/link';
 
 type Props = {
   id: number;
@@ -35,6 +36,7 @@ const PostsEdit: NextPage<Props> = (props) => {
   return (
     <div className="postsNew">
       <div className="form-wrapper">
+        <Link href={'/posts'}><a>返回列表</a></Link>
         {form}
       </div>
       <style jsx global>{`
@@ -51,7 +53,7 @@ const PostsEdit: NextPage<Props> = (props) => {
       }
       .postsNew .actions{
         text-align:center;
-        background: #ddd;
+        background: #a5a5ee;
         padding: 4px 0;
       }
       `}</style>

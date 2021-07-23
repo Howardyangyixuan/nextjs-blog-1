@@ -2,6 +2,7 @@ import {NextPage} from 'next';
 import React from 'react';
 import axios from 'axios';
 import {useForm} from '../../hooks/useForm';
+import Link from 'next/link';
 
 const PostsNew: NextPage = () => {
   const {form} = useForm({
@@ -23,6 +24,7 @@ const PostsNew: NextPage = () => {
   return (
     <div className="postsNew">
       <div className="form-wrapper">
+        <Link href={'/posts'}><a>返回列表</a></Link>
         {form}
       </div>
       <style jsx global>{`
