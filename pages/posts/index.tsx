@@ -1,11 +1,12 @@
 import {NextPage} from 'next';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {getPosts} from '../../lib/posts';
 import Link from 'next/link';
 import queryString from 'query-string';
 import {usePager} from 'hooks/usePager';
 import withSession, {NextIronHandler, NextIronPageContext} from '../../lib/withSession';
 import {User} from '../../custom';
+import axios from 'axios';
 
 type Post = {
   id: string;
@@ -24,17 +25,29 @@ const PostsIndex: NextPage<Props> = (props) => {
   const {pager} = usePager({
     page, totalPage,
   });
+  const logout = useCallback(async () => {
+    await axios.get('/api/v1/logout');
+    window.location.href = '/posts';
+  }, []);
   return (
     <>
       <div className="posts">
         <header>
           <h1>文章列表</h1>
-          {currentUser && <Link href={'/posts/new'}><a>新增文章</a></Link>}
+          <p className="actions">
+            {currentUser ?
+              (<>
+                <button onClick={logout}>登出</button>
+                <Link href={'/posts/new'}>
+                  <a>新增文章</a></Link></>) :
+              <><Link href={'/sign_in'}><a>登录</a></Link>
+                <Link href={'/sign_up'}><a>注册</a></Link></>}
+          </p>
         </header>
         {posts.length == 0 ? <div>正在构思中...目前还有没有文章</div> :
           posts.map(post =>
-            <div className="onePost">
-              <Link key={post.id} href={`/posts/${post.id}`}>
+            <div key={post.id} className="onePost">
+              <Link href={`/posts/${post.id}`}>
                 <a>
                   {post.title}
                 </a>
@@ -70,6 +83,12 @@ const PostsIndex: NextPage<Props> = (props) => {
         .onePost > a:hover{
         color: #a5a5ee
         }
+        .actions > *{
+        margin: 4px; 
+      }
+      .actions > *:first-child{
+        margin-left: 0; 
+      }
         `}</style>
     </>
   );
