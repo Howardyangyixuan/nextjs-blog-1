@@ -4,6 +4,7 @@ import axios from 'axios';
 import {Post} from '../../../src/entity/Post';
 import {getPost} from '../../../lib/posts';
 import React from 'react';
+import {useNotFound} from '../../../hooks/useNotFound';
 
 type Props = {
   id: number;
@@ -13,6 +14,7 @@ const PostsEdit: NextPage<Props> = (props) => {
   const {post, id} = props;
   console.log('post');
   console.log(post);
+  if (!post) return useNotFound();
   const {form} = useForm({
     initFormData: {title: post.title, content: post.content},
     fields: [
