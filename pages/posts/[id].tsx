@@ -33,13 +33,14 @@ const Page: NextPage<Props> = (props) => {
       <div className="wrapper">
         <header>
           <h1>{post.title}</h1>
-          {currentUser &&
           <p className="actions">
-            <Link href={'/posts/[id]/edit'} as={`/posts/${post.id}/edit`}><a>编辑</a></Link>
-            <button onClick={onRemove}>删除</button>
+            {currentUser && <>
+              <Link href={'/posts/[id]/edit'} as={`/posts/${post.id}/edit`}><a>编辑</a></Link>
+              <button onClick={onRemove}>删除</button>
+            </>
+            }
             <Link href={'/posts'}><a>返回列表</a></Link>
           </p>
-          }
         </header>
         <article className="markdown-body" dangerouslySetInnerHTML={{__html: marked(post.content)}}>
         </article>

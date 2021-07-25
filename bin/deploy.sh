@@ -1,4 +1,4 @@
-DATABASE_DOCKER_ID=d497
+DATABASE_DOCKER_ID=4d83
 echo 'start';
 docker start $DATABASE_DOCKER_ID &&
 cd /home/blog/app/ &&
