@@ -8,9 +8,9 @@ const Home: NextPage = () => {
     <>
       <div className="cover">
         <img src={logo.src} alt=''/>
-        <h1>杨义轩的个人博客</h1>
-        <p>我是一个很爱学习的人</p>
-        <p><Link href="./posts" ><a>文章列表</a></Link></p>
+        <h1>心灵树洞</h1>
+        <p>一个可以畅所欲言的地方</p>
+        <p><Link href="./posts"><a>进入树洞</a></Link></p>
       </div>
       <style jsx>{`
       .cover{

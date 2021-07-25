@@ -33,18 +33,18 @@ const PostsIndex: NextPage<Props> = (props) => {
     <>
       <div className="posts">
         <header>
-          <h1>文章列表</h1>
+          <h1><Link href="/"><a>🕳️</a></Link>️</h1>
           <p className="actions">
             {currentUser ?
               (<>
                 <button onClick={logout}>登出</button>
                 <Link href={'/posts/new'}>
-                  <a>新增文章</a></Link></>) :
+                  <a>吐露心声</a></Link></>) :
               <><Link href={'/sign_in'}><a>登录</a></Link>
                 <Link href={'/sign_up'}><a>注册</a></Link></>}
           </p>
         </header>
-        {posts.length == 0 ? <div>正在构思中...目前还有没有文章</div> :
+        {posts.length == 0 ? <div>树洞里竟是空的...</div> :
           posts.map(post =>
             <div key={post.id} className="onePost">
               <Link href={`/posts/${post.id}`}>
@@ -71,6 +71,9 @@ const PostsIndex: NextPage<Props> = (props) => {
       }
       .posts >header > h1{
          margin: 0 auto 0 0;
+      }
+      .posts >header > h1 > a{
+         border-bottom: none;
       }
         .onePost{
         border-bottom: 1px solid #ddd;

@@ -31,8 +31,8 @@ const SignUp: NextPage = () => {
     <>
       <h1>注册</h1>
       <p className='actions'>
-        <Link href={'/'}><a>返回首页</a></Link>
-        <Link href={'/posts'}><a>返回列表</a></Link>
+        <Link href={'/'}><a>返回洞口</a></Link>
+        <Link href={'/posts'}><a>返回树洞</a></Link>
         <Link href={'/sign_in'}><a>登录</a></Link>
       </p>
       {form}

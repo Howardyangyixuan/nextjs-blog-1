@@ -4,7 +4,7 @@ import Head from "next/head"
 function MyApp({ Component, pageProps }) {
   return <div className="hi">
     <Head>
-      <title>my blog</title>
+      <title>心灵树洞</title>
     </Head>
     <Component {...pageProps} /></div>
 }

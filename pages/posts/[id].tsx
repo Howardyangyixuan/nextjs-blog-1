@@ -21,10 +21,10 @@ const Page: NextPage<Props> = (props) => {
   const onRemove = useCallback(() => {
     axios.delete(`/api/v1/posts?id=${id}`).then(() => {
       // axios.delete(`/api/v1/posts/${id}`).then(() => {
-      window.alert('删除成功');
+      window.alert('回声消失了...');
       router.push('/posts');
     }, () => {
-      window.alert('删除失败');
+      window.alert('树洞堵住了...');
     });
   }, [id]);
   if (!post) return useNotFound();
@@ -39,7 +39,7 @@ const Page: NextPage<Props> = (props) => {
               <button onClick={onRemove}>删除</button>
             </>
             }
-            <Link href={'/posts'}><a>返回列表</a></Link>
+            <Link href={'/posts'}><a>返回树洞</a></Link>
           </p>
         </header>
         <article className="markdown-body" dangerouslySetInnerHTML={{__html: marked(post.content)}}>

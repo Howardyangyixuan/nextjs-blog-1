@@ -13,18 +13,18 @@ const PostsNew: NextPage = () => {
     submit: {
       request: formData => axios.post('/api/v1/posts', formData),
       success: () => {
-        window.alert('提交成功');
+        window.alert('树洞里出现了回声...');
         window.location.href = '/posts';
       }
     },
     buttons: <div className="actions">
-      <button type="submit">提交</button>
+      <button type="submit">分享</button>
     </div>
   });
   return (
     <div className="postsNew">
       <div className="form-wrapper">
-        <Link href={'/posts'}><a>返回列表</a></Link>
+        <Link href={'/posts'}><a>返回树洞</a></Link>
         {form}
       </div>
       <style jsx global>{`

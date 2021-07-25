@@ -23,12 +23,12 @@ const PostsEdit: NextPage<Props> = (props) => {
       {label: '内容', type: 'textarea', key: 'content'},
     ],
     buttons: <div className="actions">
-      <button type="submit">提交</button>
+      <button type="submit">分享</button>
     </div>,
     submit: {
       request: formData => axios.patch(`/api/v1/posts`, {...formData, id}),
       success: () => {
-        window.alert('提交成功');
+        window.alert('树洞里出现了回声...');
         window.location.href = `/posts/${id}`;
       }
     }
@@ -36,7 +36,7 @@ const PostsEdit: NextPage<Props> = (props) => {
   return (
     <div className="postsNew">
       <div className="form-wrapper">
-        <Link href={'/posts'}><a>返回列表</a></Link>
+        <Link href={'/posts'}><a>返回树洞</a></Link>
         {form}
       </div>
       <style jsx global>{`

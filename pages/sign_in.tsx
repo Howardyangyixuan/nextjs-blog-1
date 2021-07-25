@@ -32,10 +32,10 @@ const SignIn: NextPage<userSession> = (props) => {
   return (
     <>
       <h1>登录
-        {props.user ? <> 当前登录用户为{props.user.username}</> : null}</h1>
+        {props.user ? <> 欢迎{props.user.username}进入心灵树洞</> : null}</h1>
       <p className='actions'>
-        <Link href={'/'}><a>返回首页</a></Link>
-        <Link href={'/posts'}><a>返回列表</a></Link>
+        <Link href={'/'}><a>返回洞口</a></Link>
+        <Link href={'/posts'}><a>返回树洞</a></Link>
         <Link href={'/sign_up'}><a>注册</a></Link>
       </p>
       {form}
