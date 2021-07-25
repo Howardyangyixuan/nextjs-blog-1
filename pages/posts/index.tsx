@@ -33,7 +33,7 @@ const PostsIndex: NextPage<Props> = (props) => {
     <>
       <div className="posts">
         <header>
-          <h1><Link href="/"><a>🕳️</a></Link>️</h1>
+          <h1><Link href="/"><a>🕳️</a></Link></h1>
           <p className="actions">
             {currentUser ?
               (<>
