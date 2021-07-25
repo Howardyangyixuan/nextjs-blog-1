@@ -17,11 +17,9 @@ const withSession = (handler: NextIronHandler | NextIronContextHandler) =>
   withIronSession(handler, {
     password: process.env.SECRET_COOKIE_PASSWORD,
     cookieName: 'blog',
-    // cookieOptions: {
-    //   // the next line allows to use the session in non-https environments like
-    //   // Next.js dev mode (http://localhost:3000)
-    //   secure: process.env.NODE_ENV === 'production',
-    // },
+    cookieOptions: {
+      secure:false
+    },
   });
 
 export default withSession;
