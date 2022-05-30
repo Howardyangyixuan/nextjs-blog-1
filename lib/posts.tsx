@@ -9,12 +9,14 @@ type Posts = {
 }
 export const getPosts: (page?: number, perPage?: number) => Promise<Posts> = async (page = 1, perPage = 10) => {
   const connection = await getDatabaseConnection();
+  const amount = await connection.manager.count('posts');
   if (page < 0) page = 1;
-  let [posts, cnt] = await connection.manager.findAndCount('posts', {skip: (page - 1) * perPage, take: perPage});
-  if (((page - 1) * perPage) >= cnt) {
-    page = Math.ceil(cnt / perPage);
-    [posts, cnt] = await connection.manager.findAndCount('posts', {skip: (page - 1) * perPage, take: perPage});
+  if (((page - 1) * perPage) >= amount) {
+    page = Math.ceil(amount / perPage);
   }
+  let [posts, cnt] = await connection.manager.findAndCount('posts', {
+    skip: (page - 1) * perPage, take: perPage, order: {'updatedAt': 'DESC'}
+  });
   return JSON.parse(JSON.stringify({page, posts, cnt}));
 };
 
