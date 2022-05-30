@@ -2,14 +2,13 @@ import React, {useCallback} from 'react';
 import {NextPage} from 'next';
 import {getPost} from '../../lib/posts';
 import {Post} from '../../src/entity/Post';
-import marked from 'marked';
+import ReactMarkdown from 'react-markdown';
 import withSession, {NextIronHandler, NextIronPageContext} from '../../lib/withSession';
 import Link from 'next/link';
 import {User} from '../../custom';
 import {useRouter} from 'next/router';
 import axios from 'axios';
 import {useNotFound} from '../../hooks/useNotFound';
-import {escapeHtml} from '@hapi/hoek';
 
 type Props = {
   id: string | string[]
@@ -43,7 +42,8 @@ const Page: NextPage<Props> = (props) => {
             <Link href={'/posts'}><a>返回树洞</a></Link>
           </p>
         </header>
-        <article className="markdown-body" dangerouslySetInnerHTML={{__html: marked(escapeHtml(post.content))}}>
+        <article className="markdown-body">
+          <ReactMarkdown>{post.content}</ReactMarkdown>
         </article>
       </div>
       <style jsx>{`
