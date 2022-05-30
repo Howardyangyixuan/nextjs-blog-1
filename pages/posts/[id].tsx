@@ -9,6 +9,7 @@ import {User} from '../../custom';
 import {useRouter} from 'next/router';
 import axios from 'axios';
 import {useNotFound} from '../../hooks/useNotFound';
+import {escapeHtml} from '@hapi/hoek';
 
 type Props = {
   id: string | string[]
@@ -42,7 +43,7 @@ const Page: NextPage<Props> = (props) => {
             <Link href={'/posts'}><a>返回树洞</a></Link>
           </p>
         </header>
-        <article className="markdown-body" dangerouslySetInnerHTML={{__html: marked(post.content)}}>
+        <article className="markdown-body" dangerouslySetInnerHTML={{__html: marked(escapeHtml(post.content))}}>
         </article>
       </div>
       <style jsx>{`

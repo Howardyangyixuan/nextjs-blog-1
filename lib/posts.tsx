@@ -1,7 +1,6 @@
 import {getDatabaseConnection} from './getDatabaseConnection';
 import {Post} from '../src/entity/Post';
 import {DeleteResult} from 'typeorm';
-import {escapeHtml} from '@hapi/hoek';
 
 type Posts = {
   page: number,
@@ -35,12 +34,7 @@ export const getPostIds: () => Promise<string[]> = async () => {
 };
 export const savePost: (post: Post) => Promise<Post> = async (post) => {
   const connection = await getDatabaseConnection();
-  const escapedPost = {
-    id: post.id,
-    title: post.title,
-    content: escapeHtml(post.content)
-  };
-  let newPost = await connection.manager.save('posts', escapedPost);
+  let newPost = await connection.manager.save('posts', post);
   return JSON.parse(JSON.stringify(newPost));
 };
 
